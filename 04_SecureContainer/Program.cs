@@ -33,14 +33,25 @@ namespace _04_SecureContainer
         }
         static void Part2(int loVal, int hiVal)
         {
-            Console.WriteLine($"{loVal} - {hiVal}");
+            int result = 0;
+
+            int i = loVal;
+            while (i <= hiVal)
+            {
+                if (Part2Check(i.ToString()))
+                {
+                    result++;
+                }
+                i++;
+            }
+            Console.WriteLine($"{result}");
         }
         static bool Part1Check(string str)
         {
             bool asc = true;
             bool dbl = false;
 
-            for ( int i = 1; i < str.Length && asc ; i++)
+            for (int i = 1; i < str.Length && asc; i++)
             {
                 if (str[i - 1] > str[i])
                     asc = false;
@@ -49,6 +60,20 @@ namespace _04_SecureContainer
             }
 
             return asc && dbl;
+        }
+
+        static bool Part2Check ( string str)
+        {
+            bool grp = false;
+            if ( Part1Check (str))
+            {
+                bool asc = false;
+                for (int i = 1; i < str.Length && asc; i++)
+                {
+                   }
+
+            }
+            return true;
         }
     }
 }
