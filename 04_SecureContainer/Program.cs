@@ -62,18 +62,25 @@ namespace _04_SecureContainer
             return asc && dbl;
         }
 
-        static bool Part2Check ( string str)
+        static bool Part2Check(string str)
         {
-            bool grp = false;
-            if ( Part1Check (str))
-            {
-                bool asc = false;
-                for (int i = 1; i < str.Length && asc; i++)
-                {
-                   }
+            int[] dig = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
+            bool grp = false;
+            if (Part1Check(str))
+            {
+                for (int i = 0; i < str.Length; i++)
+                {
+                    dig[Int32.Parse(str[i].ToString())]++;
+                }
+
+                for (int i = 0; i < dig.Length; i++)
+                {
+                    if (dig[i] == 2)
+                        return true;
+                }
             }
-            return true;
+            return false;
         }
     }
 }
