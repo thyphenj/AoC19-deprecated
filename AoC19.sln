@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "02_1202ProgramAlarm", "02_1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "03_CrossedWires", "03_CrossedWires\03_CrossedWires.csproj", "{38EF7415-CBC9-45FE-BCE8-56736A521E06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "04_SecureContainer", "04_SecureContainer\04_SecureContainer.csproj", "{454C43AC-1E9D-42C7-AD57-1077CC43C632}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "04_SecureContainer", "04_SecureContainer\04_SecureContainer.csproj", "{454C43AC-1E9D-42C7-AD57-1077CC43C632}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "05_SunnyWithAChanceOfAsteroids", "05_SunnyWithAChanceOfAsteroids\05_SunnyWithAChanceOfAsteroids.csproj", "{FADA7A1C-2FC6-443D-AD7B-31CDF29FC9D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{454C43AC-1E9D-42C7-AD57-1077CC43C632}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{454C43AC-1E9D-42C7-AD57-1077CC43C632}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{454C43AC-1E9D-42C7-AD57-1077CC43C632}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FADA7A1C-2FC6-443D-AD7B-31CDF29FC9D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FADA7A1C-2FC6-443D-AD7B-31CDF29FC9D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FADA7A1C-2FC6-443D-AD7B-31CDF29FC9D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FADA7A1C-2FC6-443D-AD7B-31CDF29FC9D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
