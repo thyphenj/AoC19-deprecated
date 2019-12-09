@@ -5,6 +5,8 @@ namespace _05_SunnyWithAChanceOfAsteroids
 {
     class Program
     {
+        static bool glob = true;
+
         static void Main()
         {
             int[] theData =
@@ -26,11 +28,10 @@ namespace _05_SunnyWithAChanceOfAsteroids
                 1008,677,677,224,102,2,223,223,1005,224,329,1001,223,1,223,1108,677,226,224,
                 1002,223,2,223,1006,224,344,101,1,223,223,107,677,226,224,1002,223,2,223,1006,224,359,101,1,223,223,108,677,677,224,1002,223,2,223,1006,224,374,1001,223,1,223,108,226,677,224,1002,223,2,223,1006,224,389,101,1,223,223,7,226,677,224,102,2,223,223,1006,224,404,1001,223,1,223,1108,677,677,224,1002,223,2,223,1005,224,419,101,1,223,223,1008,226,677,224,102,2,223,223,1006,224,434,101,1,223,223,107,226,226,224,102,2,223,223,1005,224,449,1001,223,1,223,1007,677,677,224,1002,223,2,223,1006,224,464,1001,223,1,223,1007,226,226,224,1002,223,2,223,1005,224,479,101,1,223,223,1008,226,226,224,102,2,223,223,1006,224,494,1001,223,1,223,8,226,226,224,102,2,223,223,1006,224,509,101,1,223,223,1107,677,677,224,102,2,223,223,1005,224,524,1001,223,1,223,1108,226,677,224,1002,223,2,223,1006,224,539,101,1,223,223,1107,677,226,224,1002,223,2,223,1006,224,554,101,1,223,223,1007,677,226,224,1002,223,2,223,1005,224,569,101,1,223,223,7,677,226,224,1002,223,2,223,1006,224,584,101,1,223,223,107,677,677,224,1002,223,2,223,1005,224,599,1001,223,1,223,8,226,677,224,1002,223,2,223,1005,224,614,101,1,223,223,7,677,677,224,1002,223,2,223,1006,224,629,1001,223,1,223,1107,226,677,224,1002,223,2,223,1006,224,644,101,1,223,223,108,226,226,224,102,2,223,223,1005,224,659,1001,223,1,223,8,677,226,224,1002,223,2,223,1005,224,674,101,1,223,223,4,223,99,226};
 
-            //theData = new int[] { 1002, 4, 3, 4, 33,99 };
+            //theData = new int[] { 3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8 };
 
             Part1(theData);
 
-            //   Part2(theData);
         }
 
         static void Part1(int[] theData)
@@ -38,72 +39,134 @@ namespace _05_SunnyWithAChanceOfAsteroids
             int[] thisData = new int[theData.Length];
             Array.Copy(theData, thisData, theData.Length);
 
-            //thisData[1] = 12;
-            //thisData[2] = 2;
-
             long answer = RunProgram(thisData);
-
-            //Console.WriteLine($"{answer}");
-        }
-        static void Part2(int[] theData)
-        {
-            long target = 19690720;
-
-            for (int i = 0; i < 100; i++)
-            {
-                for (int j = 0; j < 100; j++)
-                {
-                    int[] thisData = new int[theData.Length];
-                    Array.Copy(theData, thisData, theData.Length);
-
-                    thisData[1] = i;
-                    thisData[2] = j;
-                    long ans = RunProgram(thisData);
-                    if (ans == target)
-                        Console.WriteLine($"{i},{j} => {ans} ... {100 * i + j}");
-                }
-            }
         }
 
         static long RunProgram(int[] theData)
         {
-            int i = 0;
             bool completed = false;
 
-            while (i < theData.Length && !completed)
-            {
-                int opcode = theData[i] % 100;
-                bool mod1 = 1 == (theData[i] / 100) % 10;
-                bool mod2 = 1 == (theData[i] / 1000) % 10;
+            int sp = 0;
 
-                switch (opcode)
+            while (!completed)
+            {
+                int op = theData[sp] % 100;
+                bool mod1 = 1 == (theData[sp] / 100) % 10;
+                bool mod2 = 1 == (theData[sp] / 1000) % 10;
+                bool mod3 = 1 == (theData[sp] / 10000) % 10;
+                int x, y, z;
+
+                switch (op)
                 {
-                    case 1:
-                        theData[theData[i + 3]]
-                           = theData[mod1 ? i + 1 : theData[i + 1]]
-                           + theData[mod2 ? i + 2 : theData[i + 2]];
-                        i += 4;
+                    case 1:     // add x,y => z
+
+                        x = mod1 ? sp + 1 : theData[sp + 1];
+                        y = mod2 ? sp + 2 : theData[sp + 2];
+                        z = theData[sp + 3];
+
+                        if (glob) Console.WriteLine($"{theData[sp],5} - {op,2} (add) ({x,4},{y,4}) => ({z,4}) [{theData[x]},{theData[y]}=>{theData[z]}]");
+
+                        theData[z] = theData[x] + theData[y];
+
+                        sp += 4;
                         break;
-                    case 2:
-                        theData[theData[i + 3]]
-                            = theData[mod1 ? i + 1 : theData[i + 1]]
-                            * theData[mod2 ? i + 2 : theData[i + 2]];
-                        i += 4;
+
+                    case 2:     // mul x,y => z
+
+                        x = mod1 ? sp + 1 : theData[sp + 1];
+                        y = mod2 ? sp + 2 : theData[sp + 2];
+                        z = theData[sp + 3];
+
+        
+                        if (glob) Console.WriteLine($"{theData[sp],5} - {op,2} (mul) ({x,4},{y,4}) => ({z,4}) [{theData[x]},{theData[y]}=>{theData[z]}]");
+
+                        theData[z] = theData[x] * theData[y];
+
+                        sp += 4;
                         break;
-                    case 3:
-                        theData[theData[i + 1]] = Int32.Parse(Console.ReadLine());
-                        i += 2;
+
+                    case 3:     // rea => x
+
+                        x = mod1 ? sp + 1 : theData[sp + 1];
+
+                        Console.Write("===> ");
+                        theData[x] = Int32.Parse(Console.ReadLine());
+
+                        sp += 2;
                         break;
-                    case 4:
-                        Console.WriteLine($"{theData[mod1 ? i + 1 : theData[i + 1]]}");
-                        i += 2;
+
+                    case 4:     // wri x
+
+                        x = mod1 ? sp + 1 : theData[sp + 1];
+
+                        if (glob) Console.WriteLine($"{theData[sp],5} - {op,2} (wri) ({x,4}     ) => (    ) [{theData[x]}]");
+
+
+                        Console.WriteLine($"===< {theData[x]}");
+
+                        sp += 2;
                         break;
+
+                    case 5:     // jnz x => y
+                        x = mod1 ? sp + 1 : theData[sp + 1];
+                        y = mod2 ? sp + 2 : theData[sp + 2];
+
+                        if (glob) Console.WriteLine($"{theData[sp],5} - {op,2} (jnz) ({x,4},-sp-) => ({y,4}) [{theData[x]},-sp-=>{theData[y]}]");
+
+                        if (theData[x] != 0)
+                            sp = theData[y];
+                        else
+                            sp += 3;
+
+                       break;
+
+                    case 6:     //jez x => y
+                        x = mod1 ? sp + 1 : theData[sp + 1];
+                        y = mod2 ? sp + 2 : theData[sp + 2];
+
+                        if (glob) Console.WriteLine($"{theData[sp],5} - {op,2} (jez) ({x,4},-sp-) => ({y,4}) [{theData[x]},-sp-=>{theData[y]}]");
+
+                        if (theData[x] == 0)
+                            sp = theData[y];
+                        else
+                            sp += 3;
+
+                        break;
+
+                    case 7:     // lt x,y => z
+
+                        x = mod1 ? sp + 1 : theData[sp + 1];
+                        y = mod2 ? sp + 2 : theData[sp + 2];
+                        z = theData[sp + 3];
+
+                        if (glob) Console.WriteLine($"{theData[sp],5} - {op,2} (lt ) ({x,4},{y,4}) => ({z,4}) [{theData[x]},{theData[y]}=>{theData[z]}]");
+
+                        theData[z] = (theData[x] < theData[y]) ? 1 : 0;
+
+                        sp += 4;
+      
+                        break;
+
+                    case 8:     // eq x,y => z
+
+                        x = mod1 ? sp + 1 : theData[sp + 1];
+                        y = mod2 ? sp + 2 : theData[sp + 2];
+                        z = theData[sp + 3];
+
+                        if (glob) Console.WriteLine($"{theData[sp],5} - {op,2} (eq ) ({x,4},{y,4}) => ({z,4}) [{theData[x]},{theData[y]}=>{theData[z]}]");
+
+                        theData[z] = (theData[x] == theData[y]) ? 1 : 0;
+                        
+                        sp += 4;
+                        
+                        break;
+
                     case 99:
                         Console.WriteLine("\n\nDone");
                         completed = true;
                         break;
                     default:
-                        Console.WriteLine($"BREAK AT LOCATION {i}");
+                        Console.WriteLine($"BREAK AT LOCATION {sp}");
                         completed = true;
                         break;
                 }
