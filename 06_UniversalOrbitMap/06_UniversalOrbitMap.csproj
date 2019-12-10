@@ -6,4 +6,10 @@
     <RootNamespace>_06_UniversalOrbitMap</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="data.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
