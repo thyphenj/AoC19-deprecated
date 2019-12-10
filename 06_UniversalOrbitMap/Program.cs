@@ -7,14 +7,15 @@ namespace _06_UniversalOrbitMap
     class Program
     {
         static List<Orig> theData = new List<Orig>();
+        static TreeNode<Orig> SAN, YOU;
         static int distance = 0;
 
         static void Main()
         {
-            string[] tester = { "COM)B", "B)C", "C)D", "D)E", "E)F", "B)G", "G)H", "D)I", "E)J", "J)K", "K)L" };
+            string[] tester = { "COM)B", "B)C", "C)D", "D)E", "E)F", "B)G", "G)H", "D)I", "E)J", "J)K", "K)L", "K)YOU", "I)SAN" };
             //--- temp data structure
             foreach (string line in File.ReadLines(@"data.txt"))
-            //foreach (string line in tester)
+            //  foreach (string line in tester)
             {
                 theData.Add(new Orig(line));
             }
@@ -26,6 +27,20 @@ namespace _06_UniversalOrbitMap
             addSubtree(COM);
 
             Console.WriteLine(distance);
+
+            var san = SAN;
+            var you = YOU;
+            while (san.Level > you.Level)
+                san = san.Parent;
+            while (you.Level > san.Level)
+                you = you.Parent;
+            while (you.Data.name != san.Data.name)
+            {
+                you = you.Parent;
+                san = san.Parent;
+            }
+            distance = (YOU.Level - you.Level) + (SAN.Level - san.Level) - 2;
+            Console.WriteLine(distance);
         }
         static void addSubtree(TreeNode<Orig> currentNode)
         {
@@ -34,8 +49,11 @@ namespace _06_UniversalOrbitMap
             {
                 TreeNode<Orig> node = currentNode.AddChild(xx);
                 distance += node.Level;
-                //           Console.WriteLine($"Added node [{node.Data.name}] at level {node.Level}");
                 addSubtree(node);
+                if (node.Data.name == "SAN")
+                    SAN = node;
+                if (node.Data.name == "YOU")
+                    YOU = node;
             }
         }
     }

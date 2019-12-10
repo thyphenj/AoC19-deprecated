@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "03_CrossedWires", "03_Cross
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "04_SecureContainer", "04_SecureContainer\04_SecureContainer.csproj", "{454C43AC-1E9D-42C7-AD57-1077CC43C632}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "05_SunnyWithAChanceOfAsteroids", "05_SunnyWithAChanceOfAsteroids\05_SunnyWithAChanceOfAsteroids.csproj", "{FADA7A1C-2FC6-443D-AD7B-31CDF29FC9D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "05_SunnyWithAChanceOfAsteroids", "05_SunnyWithAChanceOfAsteroids\05_SunnyWithAChanceOfAsteroids.csproj", "{FADA7A1C-2FC6-443D-AD7B-31CDF29FC9D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "06_UniversalOrbitMap", "06_UniversalOrbitMap\06_UniversalOrbitMap.csproj", "{5EEFEF24-B9C9-48E4-870F-46F139BB26A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "06_UniversalOrbitMap", "06_UniversalOrbitMap\06_UniversalOrbitMap.csproj", "{5EEFEF24-B9C9-48E4-870F-46F139BB26A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "07_AmplificationCircuit", "07_AmplificationCircuit\07_AmplificationCircuit.csproj", "{BABC8813-858A-492A-94B2-AF0A7B7E6615}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{5EEFEF24-B9C9-48E4-870F-46F139BB26A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EEFEF24-B9C9-48E4-870F-46F139BB26A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EEFEF24-B9C9-48E4-870F-46F139BB26A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BABC8813-858A-492A-94B2-AF0A7B7E6615}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BABC8813-858A-492A-94B2-AF0A7B7E6615}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BABC8813-858A-492A-94B2-AF0A7B7E6615}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BABC8813-858A-492A-94B2-AF0A7B7E6615}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
