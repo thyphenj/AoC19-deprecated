@@ -13,13 +13,18 @@ namespace _07_AmplificationCircuit
             //string tester = "3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0";
             //string tester = "3,23,3,24,1002,24,10,24,1002,23,-1,23,101,5,23,23,1,24,23,23,4,23,99,0,0";
             //string tester = "3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0";
+            string tester = "3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5";
             List<int> theProgram = new List<int>();
 
-            foreach (var n in File.ReadAllText("data.txt").Split(','))
-                //foreach (var n in tester.Split(','))
+            //foreach (var n in File.ReadAllText("data.txt").Split(','))
+            foreach (var n in tester.Split(','))
                 theProgram.Add(Int32.Parse(n));
 
+            Part2(theProgram);
 
+        }
+        static void Part1(List<int> theProgram)
+        {
             int max = 0;
 
             for (int a = 0; a < 5; a++)
@@ -34,7 +39,7 @@ namespace _07_AmplificationCircuit
 
                                     foreach (int phase in new int[] { a, b, c, d, e })
                                         transfer = RunProgram(theProgram, phase, transfer);
-       
+
                                     if (transfer > max)
                                     {
                                         max = transfer;
@@ -44,6 +49,33 @@ namespace _07_AmplificationCircuit
                             }
         }
 
+        static void Part2(List<int> theProgram)
+        {
+            int max = 0;
+
+            for (int a = 0; a < 5; a++)
+                for (int b = 0; b < 5; b++)
+                    for (int c = 0; c < 5; c++)
+                        for (int d = 0; d < 5; d++)
+                            for (int e = 0; e < 5; e++)
+                            {
+                                if (!(a == b || a == c || a == d || a == e || b == c || b == d || b == e || c == d || c == e || d == e))
+                                {
+                                    int transfer = 0;
+
+                                    foreach (int phase in new int[] { a + 5, b + 5, c + 5, d + 5, e + 5 })
+                                    {
+                                        transfer = RunProgram(theProgram, phase, transfer);
+                                    }
+                                    if (transfer > max)
+                                    {
+                                        max = transfer;
+                                        Console.WriteLine($"{a+5} {b+5} {c+5} {d+5} {e+5} - {transfer}");
+                                    }
+                                }
+
+                            }
+        }
         static int RunProgram(List<int> theData, int phase, int input)
         {
             bool completed = false;
@@ -115,6 +147,8 @@ namespace _07_AmplificationCircuit
 
                         //Console.WriteLine($"===< {theData[x]}");
                         output = theData[x];
+                        
+                        completed = true;
 
                         sp += 2;
                         break;
