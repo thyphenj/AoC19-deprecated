@@ -6,23 +6,37 @@ namespace _07_AmplificationCircuit
 {
     class ProgramCode
     {
-        private bool glob = false;
+        private bool glob = true;
+        private int phase;
+        private string codeString;
 
         List<int> Code = new List<int>();
 
-        public ProgramCode ( string code)
+        public ProgramCode(string code)
         {
-            foreach (var n in code.Split(','))
-                Code.Add(int.Parse(n));
+            codeString = code;
         }
 
-        public bool Run (int input, int phase, out int output)
+        public bool Run(int input, out int output, int? pha = null)
         {
-            bool completed = false;
+            foreach (var n in codeString.Split(','))
+                Code.Add(int.Parse(n));
+
+            bool usePhase = false;
+
+            if (pha.HasValue)
+            {
+                phase = pha.Value;
+                usePhase = true;
+            }
+           Console.WriteLine($"----->phase = {phase}");
+            Console.WriteLine($"----->input = {input}");
+
             output = 0;
 
             int sp = 0;
-            bool useInput = false;
+
+            bool completed = false;
             while (!completed)
             {
                 int op = Code[sp] % 100;
@@ -37,9 +51,9 @@ namespace _07_AmplificationCircuit
 
                         x = mod1 ? sp + 1 : Code[sp + 1];
                         y = mod2 ? sp + 2 : Code[sp + 2];
-                        z = Code[sp + 3];
+                        z = mod3 ? sp + 3 : Code[sp + 3];
 
-                        if (glob) Console.WriteLine($"{Code[sp],5} - {op,2} (add) ({x,4},{y,4}) => ({z,4}) [{Code[x]},{Code[y]}=>{Code[z]}]");
+                        Logit(sp, op, "add", x, y, z);
 
                         Code[z] = Code[x] + Code[y];
 
@@ -50,10 +64,9 @@ namespace _07_AmplificationCircuit
 
                         x = mod1 ? sp + 1 : Code[sp + 1];
                         y = mod2 ? sp + 2 : Code[sp + 2];
-                        z = Code[sp + 3];
+                        z = mod3 ? sp + 3 : Code[sp + 3];
 
-
-                        if (glob) Console.WriteLine($"{Code[sp],5} - {op,2} (mul) ({x,4},{y,4}) => ({z,4}) [{Code[x]},{Code[y]}=>{Code[z]}]");
+                        Logit(sp, op, "mul", x, y, z);
 
                         Code[z] = Code[x] * Code[y];
 
@@ -64,10 +77,12 @@ namespace _07_AmplificationCircuit
 
                         x = mod1 ? sp + 1 : Code[sp + 1];
 
-                        if (!useInput)
+                        Logit(sp, op, "rd ");
+
+                        if (usePhase)
                         {
                             Code[x] = phase;
-                            useInput = true;
+                            usePhase = false;
                         }
                         else
                         {
@@ -80,10 +95,10 @@ namespace _07_AmplificationCircuit
 
                         x = mod1 ? sp + 1 : Code[sp + 1];
 
-                        if (glob) Console.WriteLine($"{Code[sp],5} - {op,2} (wri) ({x,4}     ) => (    ) [{Code[x]}]");
+                        Logit(sp, op, "wri");
 
-                        //Console.WriteLine($"===< {Code[x]}");
                         output = Code[x];
+                        Console.WriteLine($"----->output= {output}");
 
                         completed = true;
 
@@ -94,7 +109,7 @@ namespace _07_AmplificationCircuit
                         x = mod1 ? sp + 1 : Code[sp + 1];
                         y = mod2 ? sp + 2 : Code[sp + 2];
 
-                        if (glob) Console.WriteLine($"{Code[sp],5} - {op,2} (jnz) ({x,4},-sp-) => ({y,4}) [{Code[x]},-sp-=>{Code[y]}]");
+                        Logit(sp, op, "jnz", x, y);
 
                         if (Code[x] != 0)
                             sp = Code[y];
@@ -107,7 +122,7 @@ namespace _07_AmplificationCircuit
                         x = mod1 ? sp + 1 : Code[sp + 1];
                         y = mod2 ? sp + 2 : Code[sp + 2];
 
-                        if (glob) Console.WriteLine($"{Code[sp],5} - {op,2} (jez) ({x,4},-sp-) => ({y,4}) [{Code[x]},-sp-=>{Code[y]}]");
+                        Logit(sp, op, "jez", x, y);
 
                         if (Code[x] == 0)
                             sp = Code[y];
@@ -120,9 +135,9 @@ namespace _07_AmplificationCircuit
 
                         x = mod1 ? sp + 1 : Code[sp + 1];
                         y = mod2 ? sp + 2 : Code[sp + 2];
-                        z = Code[sp + 3];
+                        z = mod3 ? sp + 3 : Code[sp + 3];
 
-                        if (glob) Console.WriteLine($"{Code[sp],5} - {op,2} (lt ) ({x,4},{y,4}) => ({z,4}) [{Code[x]},{Code[y]}=>{Code[z]}]");
+                        Logit(sp, op, "lt ", x, y, z);
 
                         Code[z] = (Code[x] < Code[y]) ? 1 : 0;
 
@@ -134,9 +149,9 @@ namespace _07_AmplificationCircuit
 
                         x = mod1 ? sp + 1 : Code[sp + 1];
                         y = mod2 ? sp + 2 : Code[sp + 2];
-                        z = Code[sp + 3];
+                        z = mod3 ? sp + 3 : Code[sp + 3];
 
-                        if (glob) Console.WriteLine($"{Code[sp],5} - {op,2} (eq ) ({x,4},{y,4}) => ({z,4}) [{Code[x]},{Code[y]}=>{Code[z]}]");
+                        Logit(sp, op, "eq ", x, y, z);
 
                         Code[z] = (Code[x] == Code[y]) ? 1 : 0;
 
@@ -145,6 +160,7 @@ namespace _07_AmplificationCircuit
                         break;
 
                     case 99:
+                        Logit(sp, op, "hlt");
                         return true;
                     default:
                         Console.WriteLine($"BREAK AT LOCATION {sp}");
@@ -154,6 +170,26 @@ namespace _07_AmplificationCircuit
             }
             return false;
 
+        }
+        private void Logit(int sp, int op, string str, int? x = null, int? y = null, int? z = null)
+        {
+            if (glob)
+            {
+                Console.Write($"{sp,4} {Code[sp],5} - {op,2} {str} (");
+                if (x.HasValue)
+                    Console.Write($"({x.Value,4} = {Code[x.Value],8}");
+                else
+                    Console.Write("(    ");
+                if (y.HasValue)
+                    Console.Write($",{y.Value,4} = {Code[y.Value],8}");
+                else
+                    Console.Write("     ");
+                if (z.HasValue)
+                    Console.Write($",{z.Value,4} = {Code[z.Value],8})");
+                else
+                    Console.Write("     )");
+                Console.WriteLine();
+            }
         }
     }
 }
