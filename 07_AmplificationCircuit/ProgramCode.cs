@@ -6,31 +6,34 @@ namespace _07_AmplificationCircuit
 {
     class ProgramCode
     {
-        private bool glob = true;
-        private int phase;
+        private bool Glob = true;
+        private int Phase;
         private string codeString;
+        private string AmpName;
 
         List<int> Code = new List<int>();
 
-        public ProgramCode(string code)
+        public ProgramCode(string ampName, string code)
         {
+            AmpName = ampName;
             codeString = code;
+
+            foreach (var n in codeString.Split(','))
+                Code.Add(int.Parse(n));
         }
 
         public bool Run(int input, out int output, int? pha = null)
         {
-            foreach (var n in codeString.Split(','))
-                Code.Add(int.Parse(n));
-
             bool usePhase = false;
 
             if (pha.HasValue)
             {
-                phase = pha.Value;
+                Phase = pha.Value;
                 usePhase = true;
             }
-           Console.WriteLine($"----->phase = {phase}");
-            Console.WriteLine($"----->input = {input}");
+            Console.WriteLine($"***Starting {AmpName}*** {Phase} {input}");
+
+            if (Glob) Console.WriteLine($"----->input = {input}");
 
             output = 0;
 
@@ -40,20 +43,20 @@ namespace _07_AmplificationCircuit
             while (!completed)
             {
                 int op = Code[sp] % 100;
+
                 bool mod1 = 1 == (Code[sp] / 100) % 10;
                 bool mod2 = 1 == (Code[sp] / 1000) % 10;
                 bool mod3 = 1 == (Code[sp] / 10000) % 10;
-                int x, y, z;
+
+                int x = mod1 ? sp + 1 : Code[sp + 1];
+                int y = mod2 ? sp + 2 : Code[sp + 2];
+                int z = mod3 ? sp + 3 : Code[sp + 3];
 
                 switch (op)
                 {
                     case 1:     // add x,y => z
 
-                        x = mod1 ? sp + 1 : Code[sp + 1];
-                        y = mod2 ? sp + 2 : Code[sp + 2];
-                        z = mod3 ? sp + 3 : Code[sp + 3];
-
-                        Logit(sp, op, "add", x, y, z);
+                        Logit(sp, op, "---", x, y, z);
 
                         Code[z] = Code[x] + Code[y];
 
@@ -81,7 +84,7 @@ namespace _07_AmplificationCircuit
 
                         if (usePhase)
                         {
-                            Code[x] = phase;
+                            Code[x] = Phase;
                             usePhase = false;
                         }
                         else
@@ -98,7 +101,7 @@ namespace _07_AmplificationCircuit
                         Logit(sp, op, "wri");
 
                         output = Code[x];
-                        Console.WriteLine($"----->output= {output}");
+                        if (Glob) Console.WriteLine($"----->output= {output}");
 
                         completed = true;
 
@@ -163,7 +166,7 @@ namespace _07_AmplificationCircuit
                         Logit(sp, op, "hlt");
                         return true;
                     default:
-                        Console.WriteLine($"BREAK AT LOCATION {sp}");
+                        Console.WriteLine($"*****************************BREAK AT LOCATION {sp}");
                         completed = true;
                         break;
                 }
@@ -173,19 +176,19 @@ namespace _07_AmplificationCircuit
         }
         private void Logit(int sp, int op, string str, int? x = null, int? y = null, int? z = null)
         {
-            if (glob)
+            if (Glob)
             {
-                Console.Write($"{sp,4} {Code[sp],5} - {op,2} {str} (");
+                Console.Write($"{sp,4} {Code[sp],5} - {op,2} (");
                 if (x.HasValue)
-                    Console.Write($"({x.Value,4} = {Code[x.Value],8}");
+                    Console.Write($"({x.Value} = {Code[x.Value]}");
                 else
                     Console.Write("(    ");
                 if (y.HasValue)
-                    Console.Write($",{y.Value,4} = {Code[y.Value],8}");
+                    Console.Write($",{y.Value} = {Code[y.Value]}");
                 else
                     Console.Write("     ");
                 if (z.HasValue)
-                    Console.Write($",{z.Value,4} = {Code[z.Value],8})");
+                    Console.Write($",{z.Value} = {Code[z.Value]})");
                 else
                     Console.Write("     )");
                 Console.WriteLine();

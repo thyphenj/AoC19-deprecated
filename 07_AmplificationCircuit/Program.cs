@@ -28,30 +28,34 @@ namespace _07_AmplificationCircuit
         //-------------------------------------------------------------------------------------------------------
         static int Part1(string programText)
         {
-            ProgramCode programCode = new ProgramCode(programText);
+            ProgramCode ampA = new ProgramCode("ampA", programText);
+            ProgramCode ampB = new ProgramCode("ampB", programText);
+            ProgramCode ampC = new ProgramCode("ampC", programText);
+            ProgramCode ampD = new ProgramCode("ampD", programText);
+            ProgramCode ampE = new ProgramCode("ampE", programText);
 
             int max = 0;
 
             var perms = new int[] { 0, 1, 2, 3, 4 }.GetPermutations();
 
-            foreach (var phaseList in perms)
+            foreach (var perm in perms)
             {
-                string phaseString = string.Join(" ", phaseList);
+                string phaseString = string.Join(" ", perm);
+                int[] phases = perm.ToArray();
 
-                int input = 0;
-                int output = 0;
+                int transValue = 0;
 
-                foreach (var phase in phaseList)
+                bool completed = false;
+                completed = ampA.Run(transValue, out transValue, phases[0]);
+                completed = ampB.Run(transValue, out transValue, phases[1]);
+                completed = ampC.Run(transValue, out transValue, phases[2]);
+                completed = ampD.Run(transValue, out transValue, phases[3]);
+                completed = ampE.Run(transValue, out transValue, phases[4]);
+
+                if (transValue > max)
                 {
-                    if (programCode.Run(input, out output, phase))
-                        break;
-                    else
-                        input = output;
-                }
-                if (output > max)
-                {
-                    max = output;
-                    Console.WriteLine($"{phaseString} - {output}");
+                    max = transValue;
+                    Console.WriteLine($"{phaseString} - {transValue}");
                 }
             }
             return max;
@@ -59,29 +63,29 @@ namespace _07_AmplificationCircuit
         //-------------------------------------------------------------------------------------------------------
         static int Part2(string programText)
         {
-            ProgramCode ampA = new ProgramCode(programText);
-            ProgramCode ampB = new ProgramCode(programText);
-            ProgramCode ampC = new ProgramCode(programText);
-            ProgramCode ampD = new ProgramCode(programText);
-            ProgramCode ampE = new ProgramCode(programText);
+            ProgramCode ampA = new ProgramCode("ampA", programText);
+            ProgramCode ampB = new ProgramCode("ampB", programText);
+            ProgramCode ampC = new ProgramCode("ampC", programText);
+            ProgramCode ampD = new ProgramCode("ampD", programText);
+            ProgramCode ampE = new ProgramCode("ampE", programText);
 
             int max = 0;
 
             var perms = new int[] { 5, 6, 7, 8, 9 }.GetPermutations();
 
-            foreach (var phases in perms)
+            foreach (var perm in perms)
             {
-                string phaseString = string.Join(" ", phases);
-                int[] loc = phases.ToArray();
+                string phaseString = string.Join(" ", perm);
+                int[] phases = perm.ToArray();
 
                 int transValue = 0;
 
                 bool completed = false;
-                if (!completed) completed = ampA.Run(transValue, out transValue, loc[0]);
-                if (!completed) completed = ampB.Run(transValue, out transValue, loc[1]);
-                if (!completed) completed = ampC.Run(transValue, out transValue, loc[2]);
-                if (!completed) completed = ampD.Run(transValue, out transValue, loc[3]);
-                if (!completed) completed = ampE.Run(transValue, out transValue, loc[4]);
+                completed = ampA.Run(transValue, out transValue, phases[0]);
+                completed = ampB.Run(transValue, out transValue, phases[1]);
+                completed = ampC.Run(transValue, out transValue, phases[2]);
+                completed = ampD.Run(transValue, out transValue, phases[3]);
+                completed = ampE.Run(transValue, out transValue, phases[4]);
 
                 while (!completed)
                 {
@@ -95,7 +99,7 @@ namespace _07_AmplificationCircuit
                 if (transValue > max)
                 {
                     max = transValue;
-                    Console.WriteLine($"{phaseString} - {transValue}");
+                    Console.WriteLine($"******************************************{phaseString} - {transValue}");
                 }
                 if (completed) break;
             }
