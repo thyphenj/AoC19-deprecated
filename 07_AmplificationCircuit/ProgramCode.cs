@@ -6,19 +6,19 @@ namespace _07_AmplificationCircuit
 {
     class ProgramCode
     {
-        private bool Glob = true;
+        private readonly bool Glob = true;
         private int Phase;
-        private string codeString;
+        private string CodeString;
         private string AmpName;
 
         List<int> Code = new List<int>();
 
-        public ProgramCode(string ampName, string code)
+        public ProgramCode(string ampName, string codeString)
         {
             AmpName = ampName;
-            codeString = code;
+            CodeString = codeString;
 
-            foreach (var n in codeString.Split(','))
+            foreach (var n in CodeString.Split(','))
                 Code.Add(int.Parse(n));
         }
 
@@ -32,8 +32,6 @@ namespace _07_AmplificationCircuit
                 usePhase = true;
             }
             Console.WriteLine($"***Starting {AmpName}*** {Phase} {input}");
-
-            if (Glob) Console.WriteLine($"----->input = {input}");
 
             output = 0;
 
@@ -56,8 +54,8 @@ namespace _07_AmplificationCircuit
                 {
                     case 1:     // add x,y => z
 
-                        Logit(sp, op, "---", x, y, z);
-
+                        //Logit(sp, op, "add", x, y, z);
+                        Console.WriteLine($"sp={sp,3} ADD({Code[sp],4}) loc{z}={Code[x]}+{Code[y]}");
                         Code[z] = Code[x] + Code[y];
 
                         sp += 4;
@@ -65,11 +63,8 @@ namespace _07_AmplificationCircuit
 
                     case 2:     // mul x,y => z
 
-                        x = mod1 ? sp + 1 : Code[sp + 1];
-                        y = mod2 ? sp + 2 : Code[sp + 2];
-                        z = mod3 ? sp + 3 : Code[sp + 3];
-
-                        Logit(sp, op, "mul", x, y, z);
+                        //Logit(sp, op, "mul", x, y, z);
+                        Console.WriteLine($"sp={sp,3} MUL({Code[sp],4}) loc{z}={Code[x]}*{Code[y]}");
 
                         Code[z] = Code[x] * Code[y];
 
@@ -77,10 +72,6 @@ namespace _07_AmplificationCircuit
                         break;
 
                     case 3:     // rea => x
-
-                        x = mod1 ? sp + 1 : Code[sp + 1];
-
-                        Logit(sp, op, "rd ");
 
                         if (usePhase)
                         {
@@ -91,14 +82,17 @@ namespace _07_AmplificationCircuit
                         {
                             Code[x] = input;
                         }
+
+                        //Logit(sp, op, "rd ", x);
+
+                        Console.WriteLine($"sp={sp,3} REA({Code[sp],4}) loc{x}={Code[x]}");
+
                         sp += 2;
-                        break;
+                        break; 
 
                     case 4:     // wri x
 
-                        x = mod1 ? sp + 1 : Code[sp + 1];
-
-                        Logit(sp, op, "wri");
+                        Console.WriteLine($"sp={sp,3} WRI({Code[sp],4}) loc{x} ({Code[x]})");
 
                         output = Code[x];
                         if (Glob) Console.WriteLine($"----->output= {output}");
@@ -109,10 +103,9 @@ namespace _07_AmplificationCircuit
                         break;
 
                     case 5:     // jnz x => y
-                        x = mod1 ? sp + 1 : Code[sp + 1];
-                        y = mod2 ? sp + 2 : Code[sp + 2];
 
-                        Logit(sp, op, "jnz", x, y);
+                        //Logit(sp, op, "jnz", x, y); 
+                        Console.WriteLine($"sp={sp,3} JNZ({Code[sp],4}) loc{x} if {Code[x]} <> 0 goto loc{y}({Code[y]})");
 
                         if (Code[x] != 0)
                             sp = Code[y];
@@ -122,8 +115,6 @@ namespace _07_AmplificationCircuit
                         break;
 
                     case 6:     //jez x => y
-                        x = mod1 ? sp + 1 : Code[sp + 1];
-                        y = mod2 ? sp + 2 : Code[sp + 2];
 
                         Logit(sp, op, "jez", x, y);
 
@@ -136,10 +127,6 @@ namespace _07_AmplificationCircuit
 
                     case 7:     // lt x,y => z
 
-                        x = mod1 ? sp + 1 : Code[sp + 1];
-                        y = mod2 ? sp + 2 : Code[sp + 2];
-                        z = mod3 ? sp + 3 : Code[sp + 3];
-
                         Logit(sp, op, "lt ", x, y, z);
 
                         Code[z] = (Code[x] < Code[y]) ? 1 : 0;
@@ -149,10 +136,6 @@ namespace _07_AmplificationCircuit
                         break;
 
                     case 8:     // eq x,y => z
-
-                        x = mod1 ? sp + 1 : Code[sp + 1];
-                        y = mod2 ? sp + 2 : Code[sp + 2];
-                        z = mod3 ? sp + 3 : Code[sp + 3];
 
                         Logit(sp, op, "eq ", x, y, z);
 
@@ -166,7 +149,7 @@ namespace _07_AmplificationCircuit
                         Logit(sp, op, "hlt");
                         return true;
                     default:
-                        Console.WriteLine($"*****************************BREAK AT LOCATION {sp}");
+                        Console.WriteLine($"*****************************BAD OPCODE {op} AT LOCATION {sp}");
                         completed = true;
                         break;
                 }
@@ -178,20 +161,24 @@ namespace _07_AmplificationCircuit
         {
             if (Glob)
             {
-                Console.Write($"{sp,4} {Code[sp],5} - {op,2} (");
+                string locs = "(", vals = "(";
                 if (x.HasValue)
-                    Console.Write($"({x.Value} = {Code[x.Value]}");
-                else
-                    Console.Write("(    ");
+                {
+                    locs += x.Value;
+                    vals += Code[x.Value];
+                }
                 if (y.HasValue)
-                    Console.Write($",{y.Value} = {Code[y.Value]}");
-                else
-                    Console.Write("     ");
+                {
+                    locs += "," + y.Value;
+                    vals += "," + Code[y.Value];
+                }
                 if (z.HasValue)
-                    Console.Write($",{z.Value} = {Code[z.Value]})");
-                else
-                    Console.Write("     )");
-                Console.WriteLine();
+                {
+                    locs += "," + z.Value;
+                    vals += "," + Code[z.Value];
+                }
+
+                Console.WriteLine($"{sp,4} {Code[sp],5} - {str} " + locs + ") " + vals + ")");
             }
         }
     }

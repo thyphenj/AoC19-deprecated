@@ -19,27 +19,27 @@ namespace _07_AmplificationCircuit
             //programText = "3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0";
             //programText = "3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5";
 
-            //answer = Part1(programText);
+            answer = Part1(programText);
 
-
-            answer = Part2(programText);
+            Console.WriteLine(answer);
+            //answer = Part2(programText);
 
         }
         //-------------------------------------------------------------------------------------------------------
         static int Part1(string programText)
         {
-            ProgramCode ampA = new ProgramCode("ampA", programText);
-            ProgramCode ampB = new ProgramCode("ampB", programText);
-            ProgramCode ampC = new ProgramCode("ampC", programText);
-            ProgramCode ampD = new ProgramCode("ampD", programText);
-            ProgramCode ampE = new ProgramCode("ampE", programText);
-
             int max = 0;
 
             var perms = new int[] { 0, 1, 2, 3, 4 }.GetPermutations();
 
             foreach (var perm in perms)
             {
+                ProgramCode ampA = new ProgramCode("ampA", programText);
+                ProgramCode ampB = new ProgramCode("ampB", programText);
+                ProgramCode ampC = new ProgramCode("ampC", programText);
+                ProgramCode ampD = new ProgramCode("ampD", programText);
+                ProgramCode ampE = new ProgramCode("ampE", programText);
+
                 string phaseString = string.Join(" ", perm);
                 int[] phases = perm.ToArray();
 
