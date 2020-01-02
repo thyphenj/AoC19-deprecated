@@ -41,14 +41,15 @@ namespace _07_AmplificationCircuit
 
                         Code[z] = Code[x] + Code[y];
 
-                        sp += 4;
+                        sp += add(4);
+
                         break;
 
                     case 2:     // mul x,y => z
 
                         Code[z] = Code[x] * Code[y];
 
-                        sp += 4;
+                        sp += add(4);
                         break;
 
                     case 3:     // rea => x
@@ -58,43 +59,44 @@ namespace _07_AmplificationCircuit
 
                             if (Phase.HasValue)
                             {
-                                Phase = pha;
-                                val = pha;
+                                val = queue.Read();
                             }
                             else
                             {
-                                val = queue.Read();
+                                Phase = pha;
+                                val = pha;
                             }
 
                             Code[x] = val;
 
-                            sp += 2;
+                            sp += add(2);
+
                             break;
                         }
                     case 4:     // wri x
 
                         queue.Write(Code[x]);
-
-                        sp += 2;
                         completed = true;
+
+                        sp += add(2);
 
                         break;
 
                     case 5:     // jnz x => y
 
                         if (Code[x] != 0)
-                            sp = Code[y];
+                            sp = add(Code[y]);
                         else
-                            sp += 3;
+                            sp += add(3);
 
                         break;
 
                     case 6:     //jez x => y
 
                         if (Code[x] == 0)
-                            sp = Code[y];
+                            sp = add(Code[y]);
                         else
-                            sp += 3;
+                            sp += add(3);
 
                         break;
 
@@ -102,7 +104,7 @@ namespace _07_AmplificationCircuit
 
                         Code[z] = (Code[x] < Code[y]) ? 1 : 0;
 
-                        sp += 4;
+                        sp += add(4);
 
                         break;
 
@@ -110,7 +112,7 @@ namespace _07_AmplificationCircuit
 
                         Code[z] = (Code[x] == Code[y]) ? 1 : 0;
 
-                        sp += 4;
+                        sp += add(4);
 
                         break;
 
@@ -118,24 +120,28 @@ namespace _07_AmplificationCircuit
 
                         completed = true;
 
-                        return;
+                        break;
 
                     default:
                         Console.WriteLine($"*****************************BAD OPCODE {op} AT LOCATION {sp}");
                         break;
                 }
-                Logit();
             }
             return;
 
         }
-        private void Logit()
+
+        private int add ( int addn)
         {
-            foreach (var x in Code)
-            {
-                Console.Write($"{x}, ");
-            }
+            Console.Write($"{sp,4} - ");
+            Console.Write($"{Code[sp],4}, ");
+
+            for ( int i = 1; i < addn; i++)
+                Console.Write($"{Code[sp + i]}, ");
+
             Console.WriteLine();
+
+            return addn;
         }
     }
 }

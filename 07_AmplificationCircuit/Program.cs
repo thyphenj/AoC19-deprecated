@@ -46,10 +46,14 @@ namespace _07_AmplificationCircuit
                 var IO = new Queue(0);
 
                 for (int i = 0; i < 5; i++)
-                {
                     amps[i].Run(phases[i], IO);
-                }
+                
+                Console.WriteLine(IO.queue.Last());
                 Console.WriteLine();
+
+                if (IO.queue.Last() > max)
+                    max = IO.queue.Last();
+
             }
             return max;
         }
