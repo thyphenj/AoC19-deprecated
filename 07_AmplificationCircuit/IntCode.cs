@@ -20,24 +20,28 @@ namespace _07_AmplificationCircuit
             Code = CodeList.ToArray();
         }
 
-        public void Run(int pha, Queue queue)
+        public bool Run(int pha, Queue queue)
         {
+            bool halted = false;
             bool completed = false;
+
             while (!completed)
             {
                 int op = Code[sp] % 100;
+                bool mod1, mod2, mod3;
+                int x, y, z;
 
-                bool mod1 = 1 == (Code[sp] / 100) % 10;
-                bool mod2 = 1 == (Code[sp] / 1000) % 10;
-                bool mod3 = 1 == (Code[sp] / 10000) % 10;
-
-                int x = mod1 ? sp + 1 : Code[sp + 1];
-                int y = mod2 ? sp + 2 : Code[sp + 2];
-                int z = mod3 ? sp + 3 : Code[sp + 3];
+                mod1 = 1 == (Code[sp] / 100) % 10;
+                mod2 = 1 == (Code[sp] / 1000) % 10;
+                mod3 = 1 == (Code[sp] / 10000) % 10;
 
                 switch (op)
                 {
                     case 1:     // add x,y => z
+
+                        x = mod1 ? sp + 1 : Code[sp + 1];
+                        y = mod2 ? sp + 2 : Code[sp + 2];
+                        z = mod3 ? sp + 3 : Code[sp + 3];
 
                         Code[z] = Code[x] + Code[y];
 
@@ -47,6 +51,10 @@ namespace _07_AmplificationCircuit
 
                     case 2:     // mul x,y => z
 
+                        x = mod1 ? sp + 1 : Code[sp + 1];
+                        y = mod2 ? sp + 2 : Code[sp + 2];
+                        z = mod3 ? sp + 3 : Code[sp + 3];
+
                         Code[z] = Code[x] * Code[y];
 
                         sp += add(4);
@@ -55,6 +63,8 @@ namespace _07_AmplificationCircuit
                     case 3:     // rea => x
 
                         {
+                            x = mod1 ? sp + 1 : Code[sp + 1];
+
                             int val;
 
                             if (Phase.HasValue)
@@ -75,6 +85,8 @@ namespace _07_AmplificationCircuit
                         }
                     case 4:     // wri x
 
+                        x = mod1 ? sp + 1 : Code[sp + 1];
+
                         queue.Write(Code[x]);
                         completed = true;
 
@@ -83,6 +95,9 @@ namespace _07_AmplificationCircuit
                         break;
 
                     case 5:     // jnz x => y
+
+                        x = mod1 ? sp + 1 : Code[sp + 1];
+                        y = mod2 ? sp + 2 : Code[sp + 2];
 
                         if (Code[x] != 0)
                             sp = add(Code[y]);
@@ -93,6 +108,9 @@ namespace _07_AmplificationCircuit
 
                     case 6:     //jez x => y
 
+                        x = mod1 ? sp + 1 : Code[sp + 1];
+                        y = mod2 ? sp + 2 : Code[sp + 2];
+
                         if (Code[x] == 0)
                             sp = add(Code[y]);
                         else
@@ -102,6 +120,10 @@ namespace _07_AmplificationCircuit
 
                     case 7:     // lt x,y => z
 
+                        x = mod1 ? sp + 1 : Code[sp + 1];
+                        y = mod2 ? sp + 2 : Code[sp + 2];
+                        z = mod3 ? sp + 3 : Code[sp + 3];
+
                         Code[z] = (Code[x] < Code[y]) ? 1 : 0;
 
                         sp += add(4);
@@ -109,6 +131,10 @@ namespace _07_AmplificationCircuit
                         break;
 
                     case 8:     // eq x,y => z
+
+                        x = mod1 ? sp + 1 : Code[sp + 1];
+                        y = mod2 ? sp + 2 : Code[sp + 2];
+                        z = mod3 ? sp + 3 : Code[sp + 3];
 
                         Code[z] = (Code[x] == Code[y]) ? 1 : 0;
 
@@ -119,7 +145,7 @@ namespace _07_AmplificationCircuit
                     case 99:
 
                         completed = true;
-
+                        halted = true;
                         break;
 
                     default:
@@ -127,19 +153,19 @@ namespace _07_AmplificationCircuit
                         break;
                 }
             }
-            return;
+            return halted;
 
         }
 
         private int add ( int addn)
         {
-            Console.Write($"{sp,4} - ");
-            Console.Write($"{Code[sp],4}, ");
+            //Console.Write($"{sp,4} - ");
+            //Console.Write($"{Code[sp],4}");
 
-            for ( int i = 1; i < addn; i++)
-                Console.Write($"{Code[sp + i]}, ");
+            //for ( int i = 1; i < addn; i++)
+            //    Console.Write($", {Code[sp + i]}");
 
-            Console.WriteLine();
+            //Console.WriteLine();
 
             return addn;
         }
