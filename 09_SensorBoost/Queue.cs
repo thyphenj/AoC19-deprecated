@@ -6,7 +6,7 @@ namespace _09_SensorBoost
 {
     class Queue
     {
-        public List<int> queue = new List<int>();
+        public List<long> queue = new List<long>();
 
         public Queue(int seed)
         {
@@ -16,7 +16,7 @@ namespace _09_SensorBoost
         {
 
         }
-        public int Read()
+        public long Read()
         {
             if (queue.Count > 0)
             {
@@ -29,7 +29,7 @@ namespace _09_SensorBoost
                 return 0;
             }
         }
-        public void Write(int val)
+        public void Write(long val)
         {
             queue.Add(val);
         }

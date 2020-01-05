@@ -13,14 +13,15 @@ namespace _09_SensorBoost
         private int bp = 0;
         private int op = 0;
 
-        public int[] Code;
+        public long[] Code;
 
         public IntCode(string codeString, bool usePhase = false)
         {
-            List<int> CodeList = new List<int>();
+            List<long> CodeList = new List<long>();
 
+            int i = 0;
             foreach (var n in codeString.Split(','))
-                CodeList.Add(int.Parse(n));
+                CodeList.Add(long.Parse(n));
 
             Code = CodeList.ToArray();
 
@@ -41,7 +42,7 @@ namespace _09_SensorBoost
             {
                 int oper1, oper2, oper3;
 
-                op = Code[sp] ;
+                op = (int)Code[sp];
                 switch (op % 100)
                 {
                     case 1:     // add x,y => z
@@ -72,7 +73,7 @@ namespace _09_SensorBoost
                         (oper1, oper2, oper3) = getOperands(sp, opCount);
 
                         {
-                            int val;
+                            long val;
 
                             if (Phase.HasValue)
                             {
@@ -107,7 +108,7 @@ namespace _09_SensorBoost
                         (oper1, oper2, oper3) = getOperands(sp, opCount);
 
                         if (Code[oper1] != 0)
-                            sp = Code[oper2];
+                            sp = (int)Code[oper2];
                         else
                             sp += incSP(opCount);
 
@@ -119,7 +120,7 @@ namespace _09_SensorBoost
                         (oper1, oper2, oper3) = getOperands(sp, opCount);
 
                         if (Code[oper1] == 0)
-                            sp = Code[oper2];
+                            sp = (int)Code[oper2];
                         else
                             sp += incSP(opCount);
 
@@ -152,7 +153,7 @@ namespace _09_SensorBoost
                         opCount = 1;
                         (oper1, oper2, oper3) = getOperands(sp, opCount);
 
-                        bp += Code[oper1];
+                        bp += (int)Code[oper1];
 
                         sp += incSP(opCount);
 
@@ -177,14 +178,14 @@ namespace _09_SensorBoost
         {
             int oper1 = 0;
 
-            int mode = Code[sp] / Convert.ToInt32(10 * Math.Pow(10, opNum)) % 10;
+            int mode = (int)Code[sp] / Convert.ToInt32(10 * Math.Pow(10, opNum)) % 10;
 
             if (mode == 0)
-                oper1 = Code[sp + opNum];
+                oper1 = (int)Code[sp + opNum];
             if (mode == 1)
                 oper1 = sp + opNum;
             if (mode == 2)
-                oper1 = Code[sp + opNum] + bp;
+                oper1 = (int)Code[sp + opNum] + bp;
 
             if (oper1 + 1 > Code.Length)
                 Array.Resize(ref Code, oper1 + 1);

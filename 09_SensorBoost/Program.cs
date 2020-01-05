@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.IO;
 
 namespace _09_SensorBoost
 {
@@ -9,11 +10,14 @@ namespace _09_SensorBoost
         {
             string programText;
 
-            //programText = File.ReadAllText("data.txt");
-            programText = "109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99";
+            programText = File.ReadAllText("data.txt");
+            //programText = "109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99";
+            //programText = "1102,34915192,34915192,7,4,7,99,0";
+            //programText = "104,1125899906842624,99";
 
             Part1(programText);
 
+            Console.WriteLine();
 
         }
         //-------------------------------------------------------------------------------------------------------
@@ -24,7 +28,7 @@ namespace _09_SensorBoost
 
             IntCode amp = new IntCode(programText,false);
 
-            var IO = new Queue();
+            var IO = new Queue(1);
 
             amp.Run(0, IO);
 
@@ -32,9 +36,9 @@ namespace _09_SensorBoost
         }
 
         //-------------------------------------------------------------------------------------------------------
-        static int Part2(string programText)
+        static long Part2(string programText)
         {
-            int max = 0;
+            long max = 0;
 
             var perms = new int[] { 5, 6, 7, 8, 9 }.GetPermutations();
 
