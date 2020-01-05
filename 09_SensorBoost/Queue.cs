@@ -12,6 +12,10 @@ namespace _09_SensorBoost
         {
             queue.Add(seed);
         }
+        public Queue()
+        {
+
+        }
         public int Read()
         {
             if (queue.Count > 0)

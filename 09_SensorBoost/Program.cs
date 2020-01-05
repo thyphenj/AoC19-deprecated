@@ -24,7 +24,7 @@ namespace _09_SensorBoost
 
             IntCode amp = new IntCode(programText,false);
 
-            var IO = new Queue(0);
+            var IO = new Queue();
 
             amp.Run(0, IO);
 
