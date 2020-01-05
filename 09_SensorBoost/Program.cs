@@ -15,57 +15,33 @@ namespace _09_SensorBoost
             //programText = "1102,34915192,34915192,7,4,7,99,0";
             //programText = "104,1125899906842624,99";
 
-            Part1(programText);
-
-            Console.WriteLine();
+            Console.WriteLine(Part1(programText));
+            Console.WriteLine(Part2(programText));
 
         }
         //-------------------------------------------------------------------------------------------------------
 
-        static int Part1(string programText)
+        static long Part1(string programText)
         {
-            int max = 0;
-
             IntCode amp = new IntCode(programText,false);
 
             var IO = new Queue(1);
 
             amp.Run(0, IO);
 
-            return max;
+            return IO.queue[0];
         }
 
         //-------------------------------------------------------------------------------------------------------
         static long Part2(string programText)
         {
-            long max = 0;
+            IntCode amp = new IntCode(programText, false);
 
-            var perms = new int[] { 5, 6, 7, 8, 9 }.GetPermutations();
+            var IO = new Queue(2);
 
-            foreach (var perm in perms)
-            {
-                int[] phases = perm.ToArray();
+            amp.Run(0, IO);
 
-                IntCode[] amps = new IntCode[5];
-
-                for (int i = 0; i < 5; i++)
-                    amps[i] = new IntCode(programText);
-
-                var IO = new Queue(0);
-
-                bool halted = false;
-                while (!halted)
-                    for (int i = 0; i < 5; i++)
-                        halted |= amps[i].Run(phases[i], IO);
-
-                Console.WriteLine(IO.queue.Last());
-                Console.WriteLine();
-
-                if (IO.queue.Last() > max)
-                    max = IO.queue.Last();
-
-            }
-            return max;
+            return IO.queue[0];
         }
     }
 }
