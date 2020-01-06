@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace _09_SensorBoost
+namespace IntCodeComputer
 {
     class Queue
     {

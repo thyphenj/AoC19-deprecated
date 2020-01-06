@@ -1,9 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <RootNamespace>_02_1202ProgramAlarm</RootNamespace>
+    <RootNamespace>_00_IntCodeComputer</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Class1.cs~" />
+  </ItemGroup>
 </Project>
