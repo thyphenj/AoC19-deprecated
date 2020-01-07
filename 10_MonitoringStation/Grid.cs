@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace _10_MonitoringStation
 {
@@ -8,82 +7,107 @@ namespace _10_MonitoringStation
     {
         public int Width;
         public int Height;
-        public char[] theGrid;
-        public int[] theValues;
+        public char[] Map;
+        public int[] Value;
+        public HashSet<(int, int)>[] Directions;
 
-        public Grid(string programText)
+        public Grid(Data data)
         {
+            string programText = data.Retrieve();
+
             Width = programText.IndexOf('\n');
             Height = programText.Length / Width;
 
-            theGrid = new char[Loc(Width, Height)];
-            theValues = new int[Loc(Width, Height)];
+            Map = new char[Loc(Width, Height)];
+            Value = new int[Loc(Width, Height)];
+            Directions = new HashSet<(int, int)>[Loc(Width, Height)];
 
-            int y = 0;
             int x;
+            int y = 0;
 
             foreach (var row in programText.Split('\n'))
             {
                 x = 0;
                 foreach (var ch in row)
                 {
-
-                    theGrid[Loc(x, y)] = ch;
+                    Map[Loc(x, y)] = ch;
                     x++;
                 }
                 y++;
             }
+
+            Print();
         }
 
-        public void Print()
+        public void Scanner()
         {
-            // Print out the grid
             for (int y = 0; y < Height; y++)
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    Console.Write(theGrid[Loc(x, y)]);
-                }
-                Console.WriteLine();
-            }
-        }
-
-        public void Iterate()
-        {
-
-            for (int y = 0; y < Height; y++)
-            {
-                for (int x = 0; x < Width; x++)
-                {
-                    if (theGrid[Loc(x, y)] == '.')
-                        theValues[Loc(x, y)] = 0;
+                    if (Map[Loc(x, y)] == '.')
+                        Value[Loc(x, y)] = 0;
                     else
-                        theValues[Loc(x, y)] = ScanFrom(x, y);
+                        Value[Loc(x, y)] = CountScannerHits(x, y);
                 }
             }
         }
 
-        private int ScanFrom(int x0, int y0)
+        public void Laser()
         {
-            HashSet<(int, int)> direction = new HashSet<(int, int)>();
-
             for (int y = 0; y < Height; y++)
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    int yDelta = y0 - y;
-                    int xDelta = x0 - x;
-                    if (xDelta != 0 || yDelta != 0)
-                    {
-                        (xDelta, yDelta) = HCF(xDelta, yDelta);
-
-                        direction.Add((xDelta, yDelta));
-                    }
+                    if (Map[Loc(x, y)] == '.')
+                        Value[Loc(x, y)] = 0;
+                    else
+                        Value[Loc(x, y)] = CountLaserHits(x, y);
                 }
             }
+        }
+
+        public void Results(int part)
+        {
+            if (part == 1)
+            {
+                int max = 0;
+                int maxX = 0; int maxY = 0;
+                for (int y = 0; y < Height; y++)
+                {
+                    for (int x = 0; x < Width; x++)
+                    {
+                        if (Value[Loc(x, y)] == 0)
+                            Console.Write("    ");
+                        else
+                        {
+                            Console.Write($"{Value[Loc(x, y)],4}");
+                            if (Value[Loc(x, y)] > max)
+                            {
+                                max = Value[Loc(x, y)];
+                                maxX = x;
+                                maxY = y;
+                            }
+                        }
+                    }
+                    Console.WriteLine();
+                }
+                Console.WriteLine($"\n\nmax = {max} at ({maxX},{maxY})");
+            }
+
+            if (part == 2)
+            {
+
+            }
+        }
+        // ---------------------------------------------------------------------
+        // --- Private functions
+        private int CountScannerHits(int x0, int y0)
+        {
+            Directions[Loc(x0, y0)] = GetDirections(x0, y0);
 
             int hits = 0;
-            foreach (var (xDelta, yDelta) in direction)
+            foreach (var (xDelta, yDelta) in Directions[Loc(x0, y0)])
             {
                 int factor = 0;
                 int x;
@@ -100,21 +124,56 @@ namespace _10_MonitoringStation
                     y = y0 - yDelta * factor;
 
                     if (x >= 0 && y >= 0 && x < Width && y < Height)
-                    { 
-                        if (theGrid[Loc(x, y)] == '#')
+                    {
+                        if (Map[Loc(x, y)] == '#')
                         {
                             found = true;
                             hits++;
                         }
-                    }                
+                    }
                     else
                         edge = true;
                 }
             }
 
-            return hits; ;
+            return hits;
         }
-        public (int, int) HCF(int a, int b)
+
+        private int CountLaserHits ( int x0, int y0)
+        {
+            int hits = 0;
+
+            HashSet<(int, int)> directions = Directions[Loc(x0, y0)];
+
+            return hits;
+        }
+        private HashSet<(int, int)> GetDirections(int x0, int y0)
+        {
+            HashSet<(int, int)> directions = new HashSet<(int, int)>();
+
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    int yDelta = y0 - y;
+                    int xDelta = x0 - x;
+                    if (xDelta != 0 || yDelta != 0)
+                    {
+                        (xDelta, yDelta) = Simplify(xDelta, yDelta);
+
+                        directions.Add((xDelta, yDelta));
+                    }
+                }
+            }
+            return directions;
+        }
+
+        private int Loc(int x, int y)
+        {
+            return x + y * Width;
+        }
+
+        private (int, int) Simplify(int a, int b)
         {
             int x = a;
             int y = b;
@@ -134,35 +193,18 @@ namespace _10_MonitoringStation
             return (x, y);
         }
 
-        private int Loc(int x, int y)
+        private void Print()
         {
-            return x + y * Width;
-        }
-
-        public void Results()
-        {
-            int max = 0;
-            int i=0; int j=0;
+            // Print out the map
             for (int y = 0; y < Height; y++)
             {
+                string str = "";
                 for (int x = 0; x < Width; x++)
                 {
-                    if (theValues[Loc(x, y)] == 0)
-                        Console.Write("    ");
-                    else
-                    {
-                        Console.Write($"{theValues[Loc(x, y)],4}");
-                        if (theValues[Loc(x, y)] > max)
-                        {
-                            max = theValues[Loc(x, y)];
-                            i = x;
-                            j = y;
-                        }
-                    }
+                    str += Map[Loc(x, y)];
                 }
-                Console.WriteLine();
+                Console.WriteLine(str);
             }
-            Console.WriteLine($"\n\nmax = {max} at ({i},{j})");
         }
     }
 }
