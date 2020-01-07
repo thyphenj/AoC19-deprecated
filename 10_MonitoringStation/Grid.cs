@@ -139,12 +139,57 @@ namespace _10_MonitoringStation
             return hits;
         }
 
-        private int CountLaserHits ( int x0, int y0)
+        private int CountLaserHits(int x0, int y0)
         {
             int hits = 0;
 
-            HashSet<(int, int)> directions = Directions[Loc(x0, y0)];
+            foreach (var (xDelta, yDelta) in Directions[Loc(x0, y0)])
+            {
+                float dir = 99;
+                float x, y;
 
+                if (Math.Abs(xDelta) > Math.Abs(yDelta))
+                {
+                    x = (float)xDelta / (float)Math.Abs(xDelta);
+                    y = (float)yDelta / (float)Math.Abs(xDelta);
+                }
+                else 
+                {
+                    x = (float)xDelta / (float)Math.Abs(yDelta);
+                    y = (float)yDelta / (float)Math.Abs(yDelta);
+                }
+
+                if (x <= 0 && y == 1)
+                {
+                    dir = -x/y;
+                    Console.WriteLine($"{xDelta,3},{yDelta,3}   {x:0.00},{y:0.00} => {dir}");
+                }
+                else if (x == -1 && y > 0)
+                {
+                    dir = -y/x;
+                    Console.WriteLine($"{xDelta,3},{yDelta,3}   {x:0.00},{y:0.00} => {dir}");
+                }
+                else if (xDelta == -1 && yDelta == -1)
+                {
+                    dir = 3;
+                }
+                else if (xDelta == 0 && yDelta == -1)
+                {
+                    dir = 4;
+                }
+                else if (xDelta == 1 && yDelta == -1)
+                {
+                    dir = 5;
+                }
+                else if (xDelta == 1 && yDelta == 0)
+                {
+                    dir = 6;
+                }
+                else if (xDelta == 1 && yDelta == 1)
+                {
+                    dir = 7;
+                }
+            }
             return hits;
         }
         private HashSet<(int, int)> GetDirections(int x0, int y0)
