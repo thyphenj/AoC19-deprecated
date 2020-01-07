@@ -10,25 +10,27 @@ namespace _10_MonitoringStation
         public static int width;
         public static int height;
         public static SortedSet<(int, int)> direction;
+        public static int[] values = new int[grid.Length];
 
         static void Main()
         {
             string programText;
 
-            programText = File.ReadAllText("data.txt");
-            //programText = ".#..#\n" + ".....\n" + "#####\n" + "....#\n" + "...##";
+           programText = File.ReadAllText("data.txt");
+           // programText = ".#..#\n" + ".....\n" + "#####\n" + "....#\n" + "...##";
 
             PopulateGrid(programText);
 
             PrintGrid();
 
             IterateGrid();
+
+            PrintResults();
         }
 
         private static void IterateGrid()
         {
-            int[] values = new int[grid.Length];
-
+  
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
@@ -38,15 +40,6 @@ namespace _10_MonitoringStation
                     else
                         values[Loc(x, y)] = ScanFrom(x, y);
                 }
-            }
-
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    Console.Write($"{values[Loc(x, y)],2}");
-                }
-                Console.WriteLine();
             }
         }
 
@@ -71,22 +64,34 @@ namespace _10_MonitoringStation
                 }
             }
 
-            foreach (var (x, y) in direction)
+            int hits = 0;
+            foreach (var (xDelta, yDelta) in direction)
             {
                 int factor = 1;
                 bool notFound = true;
+                int x = x0 - xDelta;
+                int y = y0 - yDelta;
 
-                while (notFound && x * factor < width && y * factor < width)
+                while (notFound)
                 {
-                    if (grid[Loc(x * factor, y * factor)] == '#')
+                    x = (x0 - xDelta) * factor;
+                    y = (y0 - yDelta) * factor;
+
+                    if (x >= 0 && x < width && y >= 0 && y < height)
                     {
-                        notFound = false;
-                        Console.WriteLine($"**hit at {x*factor},{y*factor}");
+                        if (grid[Loc(x * factor, y * factor)] == '#')
+                        {
+                            notFound = false;
+                            hits++;
+                            //Console.WriteLine($"**hit at {x * factor},{y * factor}");
+                        }
                     }
+                        notFound = false;
+                    factor++;
                 }
             }
 
-            return 1;
+            return hits; ;
         }
         public static (int, int) HCF(int a, int b)
         {
@@ -139,6 +144,18 @@ namespace _10_MonitoringStation
                 for (int x = 0; x < width; x++)
                 {
                     Console.Write(grid[Loc(x, y)]);
+                }
+                Console.WriteLine();
+            }
+        }
+        public static void PrintResults()
+        {
+            // Print out the grid
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Console.Write(values[Loc(x, y)]);
                 }
                 Console.WriteLine();
             }
