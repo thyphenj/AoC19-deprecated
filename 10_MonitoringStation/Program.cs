@@ -14,9 +14,6 @@
 
             grid.Results(1);
 
-            grid.Laser();
-
-            grid.Results(2);
         }
     }
 }

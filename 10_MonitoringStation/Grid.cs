@@ -9,8 +9,9 @@ namespace _10_MonitoringStation
         public int Height;
         public char[] Map;
         public int[] Value;
-        public HashSet<(int, int)>[] Directions;
 
+        public HashSet<(int, int)>[] ScannerDirections;
+        
         public Grid(Data data)
         {
             string programText = data.Retrieve();
@@ -20,7 +21,7 @@ namespace _10_MonitoringStation
 
             Map = new char[Loc(Width, Height)];
             Value = new int[Loc(Width, Height)];
-            Directions = new HashSet<(int, int)>[Loc(Width, Height)];
+            ScannerDirections = new HashSet<(int, int)>[Loc(Width, Height)];
 
             int x;
             int y = 0;
@@ -49,20 +50,6 @@ namespace _10_MonitoringStation
                         Value[Loc(x, y)] = 0;
                     else
                         Value[Loc(x, y)] = CountScannerHits(x, y);
-                }
-            }
-        }
-
-        public void Laser()
-        {
-            for (int y = 0; y < Height; y++)
-            {
-                for (int x = 0; x < Width; x++)
-                {
-                    if (Map[Loc(x, y)] == '.')
-                        Value[Loc(x, y)] = 0;
-                    else
-                        Value[Loc(x, y)] = CountLaserHits(x, y);
                 }
             }
         }
@@ -100,14 +87,15 @@ namespace _10_MonitoringStation
 
             }
         }
+
         // ---------------------------------------------------------------------
         // --- Private functions
         private int CountScannerHits(int x0, int y0)
         {
-            Directions[Loc(x0, y0)] = GetDirections(x0, y0);
+            ScannerDirections[Loc(x0, y0)] = GetScannerDirections(x0, y0);
 
             int hits = 0;
-            foreach (var (xDelta, yDelta) in Directions[Loc(x0, y0)])
+            foreach (var (xDelta, yDelta) in ScannerDirections[Loc(x0, y0)])
             {
                 int factor = 0;
                 int x;
@@ -136,65 +124,19 @@ namespace _10_MonitoringStation
                 }
             }
 
+
             return hits;
         }
 
-        private int CountLaserHits(int x0, int y0)
+        private HashSet<Direction> GetScannerDirs(int x0, int y0)
         {
-            int hits = 0;
-
-            foreach (var (xDelta, yDelta) in Directions[Loc(x0, y0)])
-            {
-                float dir = 99;
-                float x, y;
-
-                if (Math.Abs(xDelta) > Math.Abs(yDelta))
-                {
-                    x = (float)xDelta / (float)Math.Abs(xDelta);
-                    y = (float)yDelta / (float)Math.Abs(xDelta);
-                }
-                else 
-                {
-                    x = (float)xDelta / (float)Math.Abs(yDelta);
-                    y = (float)yDelta / (float)Math.Abs(yDelta);
-                }
-
-                if (x <= 0 && y == 1)
-                {
-                    dir = -x/y;
-                    Console.WriteLine($"{xDelta,3},{yDelta,3}   {x:0.00},{y:0.00} => {dir}");
-                }
-                else if (x == -1 && y > 0)
-                {
-                    dir = -y/x;
-                    Console.WriteLine($"{xDelta,3},{yDelta,3}   {x:0.00},{y:0.00} => {dir}");
-                }
-                else if (xDelta == -1 && yDelta == -1)
-                {
-                    dir = 3;
-                }
-                else if (xDelta == 0 && yDelta == -1)
-                {
-                    dir = 4;
-                }
-                else if (xDelta == 1 && yDelta == -1)
-                {
-                    dir = 5;
-                }
-                else if (xDelta == 1 && yDelta == 0)
-                {
-                    dir = 6;
-                }
-                else if (xDelta == 1 && yDelta == 1)
-                {
-                    dir = 7;
-                }
-            }
-            return hits;
+            HashSet<Direction> dirs = new HashSet<Direction>();
+            return dirs;
         }
-        private HashSet<(int, int)> GetDirections(int x0, int y0)
+        private HashSet<(int, int)> GetScannerDirections(int x0, int y0)
         {
-            HashSet<(int, int)> directions = new HashSet<(int, int)>();
+            HashSet<(int, int)> retDirections = new HashSet<(int, int)>();
+            List<Direction> dirs = new List<Direction>();
 
             for (int y = 0; y < Height; y++)
             {
@@ -206,13 +148,15 @@ namespace _10_MonitoringStation
                     {
                         (xDelta, yDelta) = Simplify(xDelta, yDelta);
 
-                        directions.Add((xDelta, yDelta));
+                        retDirections.Add((xDelta, yDelta));
+
+                        Direction dd = new Direction(xDelta, yDelta);
+                        dirs.Add(dd);
                     }
                 }
             }
-            return directions;
+            return retDirections;
         }
-
         private int Loc(int x, int y)
         {
             return x + y * Width;
