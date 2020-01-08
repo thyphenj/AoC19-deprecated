@@ -11,7 +11,7 @@ namespace _10_MonitoringStation
         public int[] Value;
 
         public HashSet<(int, int)>[] ScannerDirections;
-        
+
         public Grid(Data data)
         {
             string programText = data.Retrieve();
@@ -64,11 +64,8 @@ namespace _10_MonitoringStation
                 {
                     for (int x = 0; x < Width; x++)
                     {
-                        if (Value[Loc(x, y)] == 0)
-                            Console.Write("    ");
-                        else
+                        if (Value[Loc(x, y)] != 0)
                         {
-                            Console.Write($"{Value[Loc(x, y)],4}");
                             if (Value[Loc(x, y)] > max)
                             {
                                 max = Value[Loc(x, y)];
@@ -77,9 +74,8 @@ namespace _10_MonitoringStation
                             }
                         }
                     }
-                    Console.WriteLine();
                 }
-                Console.WriteLine($"\n\nmax = {max} at ({maxX},{maxY})");
+                Console.WriteLine($"\nmax = {max} at ({maxX},{maxY})");
             }
 
             if (part == 2)
@@ -123,17 +119,10 @@ namespace _10_MonitoringStation
                         edge = true;
                 }
             }
-
-
             return hits;
         }
 
-        private HashSet<Direction> GetScannerDirs(int x0, int y0)
-        {
-            HashSet<Direction> dirs = new HashSet<Direction>();
-            return dirs;
-        }
-        private HashSet<(int, int)> GetScannerDirections(int x0, int y0)
+         private HashSet<(int, int)> GetScannerDirections(int x0, int y0)
         {
             HashSet<(int, int)> retDirections = new HashSet<(int, int)>();
             List<Direction> dirs = new List<Direction>();

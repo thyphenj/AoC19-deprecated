@@ -5,7 +5,7 @@ namespace _05_SunnyWithAChanceOfAsteroids
 {
     class Program
     {
-        static bool glob = true;
+        static readonly bool glob = true;
 
         static void Main()
         {
@@ -54,7 +54,7 @@ namespace _05_SunnyWithAChanceOfAsteroids
             int[] thisData = new int[theData.Length];
             Array.Copy(theData, thisData, theData.Length);
 
-            long answer = RunProgram(thisData);
+            RunProgram(thisData);
         }
 
         static long RunProgram(int[] theData)
@@ -68,7 +68,7 @@ namespace _05_SunnyWithAChanceOfAsteroids
                 int op = theData[sp] % 100;
                 bool mod1 = 1 == (theData[sp] / 100) % 10;
                 bool mod2 = 1 == (theData[sp] / 1000) % 10;
-                bool mod3 = 1 == (theData[sp] / 10000) % 10;
+             //   bool mod3 = 1 == (theData[sp] / 10000) % 10;
                 int x, y, z;
 
                 switch (op)

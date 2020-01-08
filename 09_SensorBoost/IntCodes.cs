@@ -5,7 +5,7 @@ namespace _09_SensorBoost
 {
     class IntCode
     {
-        private bool UsePhase = false;
+        private readonly bool UsePhase = false;
 
         private int? Phase = null;
 
@@ -47,29 +47,29 @@ namespace _09_SensorBoost
                     case 1:     // add x,y => z
 
                         opCount = 3;
-                        (oper1, oper2, oper3) = getOperands(sp, opCount);
+                        (oper1, oper2, oper3) = GetOperands(sp, opCount);
 
                         Code[oper3] = Code[oper1] + Code[oper2];
 
-                        sp += incSP(opCount);
+                        sp += IncSP(opCount);
 
                         break;
 
                     case 2:     // mul x,y => z
 
                         opCount = 3;
-                        (oper1, oper2, oper3) = getOperands(sp, opCount);
+                        (oper1, oper2, oper3) = GetOperands(sp, opCount);
 
                         Code[oper3] = Code[oper1] * Code[oper2];
 
-                        sp += incSP(opCount);
+                        sp += IncSP(opCount);
 
                         break;
 
                     case 3:     // rea => x
 
                         opCount = 1;
-                        (oper1, oper2, oper3) = getOperands(sp, opCount);
+                        (oper1, _, _) = GetOperands(sp, opCount);
 
                         {
                             long val;
@@ -86,75 +86,75 @@ namespace _09_SensorBoost
 
                             Code[oper1] = val;
 
-                            sp += incSP(opCount);
+                            sp += IncSP(opCount);
                         }
                         break;
 
                     case 4:     // wri x
 
                         opCount = 1;
-                        (oper1, oper2, oper3) = getOperands(sp, opCount);
+                        (oper1, _, _) = GetOperands(sp, opCount);
 
                         queue.Write(Code[oper1]);
 
-                        sp += incSP(opCount);
+                        sp += IncSP(opCount);
 
                         break;
 
                     case 5:     // jnz x => y
 
                         opCount = 2;
-                        (oper1, oper2, oper3) = getOperands(sp, opCount);
+                        (oper1, oper2, _) = GetOperands(sp, opCount);
 
                         if (Code[oper1] != 0)
                             sp = (int)Code[oper2];
                         else
-                            sp += incSP(opCount);
+                            sp += IncSP(opCount);
 
                         break;
 
                     case 6:     //jez x => y
 
                         opCount = 2;
-                        (oper1, oper2, oper3) = getOperands(sp, opCount);
+                        (oper1, oper2, _) = GetOperands(sp, opCount);
 
                         if (Code[oper1] == 0)
                             sp = (int)Code[oper2];
                         else
-                            sp += incSP(opCount);
+                            sp += IncSP(opCount);
 
                         break;
 
                     case 7:     // lt x,y => z
 
                         opCount = 3;
-                        (oper1, oper2, oper3) = getOperands(sp, opCount);
+                        (oper1, oper2, oper3) = GetOperands(sp, opCount);
 
                         Code[oper3] = (Code[oper1] < Code[oper2]) ? 1 : 0;
 
-                        sp += incSP(opCount);
+                        sp += IncSP(opCount);
 
                         break;
 
                     case 8:     // eq x,y => z
 
                         opCount = 3;
-                        (oper1, oper2, oper3) = getOperands(sp, opCount);
+                        (oper1, oper2, oper3) = GetOperands(sp, opCount);
 
                         Code[oper3] = (Code[oper1] == Code[oper2]) ? 1 : 0;
 
-                        sp += incSP(opCount);
+                        sp += IncSP(opCount);
 
                         break;
 
                     case 9:
 
                         opCount = 1;
-                        (oper1, oper2, oper3) = getOperands(sp, opCount);
+                        (oper1, _, _) = GetOperands(sp, opCount);
 
                         bp += (int)Code[oper1];
 
-                        sp += incSP(opCount);
+                        sp += IncSP(opCount);
 
                         break;
 
@@ -173,7 +173,7 @@ namespace _09_SensorBoost
 
         }
 
-        private int getOperand(int opNum, int sp)
+        private int GetOperand(int opNum, int sp)
         {
             int oper1 = 0;
 
@@ -191,18 +191,18 @@ namespace _09_SensorBoost
 
             return oper1;
         }
-        private (int X, int Y, int Z) getOperands(int sp, int opCount)
+        private (int X, int Y, int Z) GetOperands(int sp, int opCount)
         {
             int oper1, oper2, oper3;
 
-            oper1 = opCount > 0 ? getOperand(1, sp) : 0;
-            oper2 = opCount > 1 ? getOperand(2, sp) : 0;
-            oper3 = opCount > 2 ? getOperand(3, sp) : 0;
+            oper1 = opCount > 0 ? GetOperand(1, sp) : 0;
+            oper2 = opCount > 1 ? GetOperand(2, sp) : 0;
+            oper3 = opCount > 2 ? GetOperand(3, sp) : 0;
 
             return (oper1, oper2, oper3);
         }
 
-        private int incSP(int addn)
+        private int IncSP(int addn)
         {
             //Console.Write($"{sp,4} - ");
             //Console.Write($"{Code[sp],4}");
