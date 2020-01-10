@@ -2,13 +2,11 @@
 {
     class Program
     {
-        public static Grid grid;
-
         public static void Main()
         {
             Data data = new Data(1);
 
-            grid = new Grid(data);
+            Grid grid = new Grid(data);
 
             grid.Scanner();
 

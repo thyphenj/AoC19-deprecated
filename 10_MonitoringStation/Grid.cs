@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace _10_MonitoringStation
 {
@@ -7,35 +8,20 @@ namespace _10_MonitoringStation
     {
         public int Width;
         public int Height;
-        public char[] Map;
-        public int[] Value;
+        public char[,] Map;
+        public int[,] HitCount;
 
-        public HashSet<(int, int)>[] ScannerDirections;
+        public List<Direction>[,] ScannerDirections;
 
         public Grid(Data data)
         {
-            string programText = data.Retrieve();
+            Width = data.Width;
+            Height = data.Height;
 
-            Width = programText.IndexOf('\n');
-            Height = programText.Length / Width;
+            Map = data.Retrieve();
 
-            Map = new char[Loc(Width, Height)];
-            Value = new int[Loc(Width, Height)];
-            ScannerDirections = new HashSet<(int, int)>[Loc(Width, Height)];
-
-            int x;
-            int y = 0;
-
-            foreach (var row in programText.Split('\n'))
-            {
-                x = 0;
-                foreach (var ch in row)
-                {
-                    Map[Loc(x, y)] = ch;
-                    x++;
-                }
-                y++;
-            }
+            HitCount = new int[Width, Height];
+            ScannerDirections = new List<Direction>[Width, Height];
 
             Print();
         }
@@ -46,11 +32,10 @@ namespace _10_MonitoringStation
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    if (Map[Loc(x, y)] == '.')
-                        Value[Loc(x, y)] = 0;
-                    else
-                        Value[Loc(x, y)] = CountScannerHits(x, y);
+                    HitCount[x, y] = (Map[x, y] == '#' ? CountScannerHits(x, y) : 0);
+                    Console.Write(Map[x, y] == '#' ? $"{HitCount[x, y],2}" : "  ");
                 }
+                Console.WriteLine();
             }
         }
 
@@ -64,14 +49,11 @@ namespace _10_MonitoringStation
                 {
                     for (int x = 0; x < Width; x++)
                     {
-                        if (Value[Loc(x, y)] != 0)
+                        if (HitCount[x, y] > max)
                         {
-                            if (Value[Loc(x, y)] > max)
-                            {
-                                max = Value[Loc(x, y)];
-                                maxX = x;
-                                maxY = y;
-                            }
+                            max = HitCount[x, y];
+                            maxX = x;
+                            maxY = y;
                         }
                     }
                 }
@@ -88,67 +70,64 @@ namespace _10_MonitoringStation
         // --- Private functions
         private int CountScannerHits(int x0, int y0)
         {
-            ScannerDirections[Loc(x0, y0)] = GetScannerDirections(x0, y0);
+            ScannerDirections[x0, y0] = GetScannerDirections(x0, y0);
 
             int hits = 0;
-            foreach (var (xDelta, yDelta) in ScannerDirections[Loc(x0, y0)])
+            foreach (var direction in ScannerDirections[x0, y0])
             {
-                int factor = 0;
-                int x;
-                int y;
+                int factor = 1;
+
+                int x1 = x0 - direction.X;
+                int y1 = y0 - direction.Y;
 
                 bool found = false;
-                bool edge = false;
 
-                while (!found && !edge)
+                while (x1 >= 0 && y1 >= 0 && x1 < Width && y1 < Height)
                 {
-                    factor++;
-
-                    x = x0 - xDelta * factor;
-                    y = y0 - yDelta * factor;
-
-                    if (x >= 0 && y >= 0 && x < Width && y < Height)
+                    if (Map[x1, y1] == '#')
                     {
-                        if (Map[Loc(x, y)] == '#')
-                        {
-                            found = true;
+                        if (found)
+                            direction.Hittable = false;
+                        else
                             hits++;
-                        }
+                        found = true;
                     }
-                    else
-                        edge = true;
+                    factor++;
+                    x1 = x0 - direction.X * factor;
+                    y1 = y0 - direction.Y * factor;
                 }
             }
             return hits;
         }
 
-         private HashSet<(int, int)> GetScannerDirections(int x0, int y0)
+        private List<Direction> GetScannerDirections(int x0, int y0)
         {
-            HashSet<(int, int)> retDirections = new HashSet<(int, int)>();
-            List<Direction> dirs = new List<Direction>();
+            List<Direction> retDirections = new List<Direction>();
 
-            for (int y = 0; y < Height; y++)
+            for (int y1 = 0; y1 < Height; y1++)
             {
-                for (int x = 0; x < Width; x++)
+                for (int x1 = 0; x1 < Width; x1++)
                 {
-                    int yDelta = y0 - y;
-                    int xDelta = x0 - x;
+                    int yDelta = y0 - y1;
+                    int xDelta = x0 - x1;
                     if (xDelta != 0 || yDelta != 0)
                     {
-                        (xDelta, yDelta) = Simplify(xDelta, yDelta);
-
-                        retDirections.Add((xDelta, yDelta));
-
-                        Direction dd = new Direction(xDelta, yDelta);
-                        dirs.Add(dd);
+                        retDirections.Add(new Direction(xDelta, yDelta));
                     }
                 }
             }
+
+            retDirections = retDirections.OrderBy(p => p.LaserOrder).OrderBy(o => o.Quadrant).ToList<Direction>();
+
+            int i = retDirections.Count - 1;
+            while (i > 0)
+            {
+                if (retDirections[i].Equal(retDirections[i - 1]))
+                    retDirections.RemoveAt(i);
+                i--;
+            }
+
             return retDirections;
-        }
-        private int Loc(int x, int y)
-        {
-            return x + y * Width;
         }
 
         private (int, int) Simplify(int a, int b)
@@ -179,7 +158,7 @@ namespace _10_MonitoringStation
                 string str = "";
                 for (int x = 0; x < Width; x++)
                 {
-                    str += Map[Loc(x, y)];
+                    str += Map[x, y];
                 }
                 Console.WriteLine(str);
             }
