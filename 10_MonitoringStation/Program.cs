@@ -4,11 +4,11 @@
     {
         public static void Main()
         {
-            Data data = new Data(1);
+            Data data = new Data();
 
             Grid grid = new Grid(data);
 
-            grid.Scanner();
+            grid.Scan();
 
             grid.Results(1);
 

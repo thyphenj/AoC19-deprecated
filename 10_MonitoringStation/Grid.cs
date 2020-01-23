@@ -26,16 +26,21 @@ namespace _10_MonitoringStation
             Print();
         }
 
-        public void Scanner()
+        public void Scan()
         {
             for (int y = 0; y < Height; y++)
             {
+                string display = "";
+
                 for (int x = 0; x < Width; x++)
                 {
-                    HitCount[x, y] = (Map[x, y] == '#' ? CountScannerHits(x, y) : 0);
-                    Console.Write(Map[x, y] == '#' ? $"{HitCount[x, y],2}" : "  ");
+                    bool foundOne = Map[x, y] == '#';
+
+                    HitCount[x, y] = foundOne ? CountScannerHits(x, y) : 0;
+
+                    display += (foundOne ? $"{HitCount[x, y],1}" : " ");
                 }
-                Console.WriteLine();
+                Console.WriteLine(display);
             }
         }
 
@@ -72,32 +77,7 @@ namespace _10_MonitoringStation
         {
             ScannerDirections[x0, y0] = GetScannerDirections(x0, y0);
 
-            int hits = 0;
-            foreach (var direction in ScannerDirections[x0, y0])
-            {
-                int factor = 1;
-
-                int x1 = x0 - direction.X;
-                int y1 = y0 - direction.Y;
-
-                bool found = false;
-
-                while (x1 >= 0 && y1 >= 0 && x1 < Width && y1 < Height)
-                {
-                    if (Map[x1, y1] == '#')
-                    {
-                        if (found)
-                            direction.Hittable = false;
-                        else
-                            hits++;
-                        found = true;
-                    }
-                    factor++;
-                    x1 = x0 - direction.X * factor;
-                    y1 = y0 - direction.Y * factor;
-                }
-            }
-            return hits;
+            return ScannerDirections[x0,y0].Count;
         }
 
         private List<Direction> GetScannerDirections(int x0, int y0)
@@ -110,7 +90,7 @@ namespace _10_MonitoringStation
                 {
                     int yDelta = y0 - y1;
                     int xDelta = x0 - x1;
-                    if (xDelta != 0 || yDelta != 0)
+                    if (Map[x1, y1] == '#' && !(xDelta == 0 && yDelta == 0))
                     {
                         retDirections.Add(new Direction(xDelta, yDelta));
                     }
