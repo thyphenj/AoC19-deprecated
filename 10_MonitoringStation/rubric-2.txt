@@ -8,7 +8,6 @@ Fortunately, in addition to an asteroid scanner, the new monitoring
 station also comes equipped with a giant rotating laser perfect for 
 vaporizing asteroids. The laser starts by pointing up and always rotates 
 clockwise, vaporizing any asteroid it hits.
-
 If multiple asteroids are exactly in line with the station, the laser 
 only has enough power to vaporize one of them before continuing its 
 rotation. In other words, the same asteroids that can be detected can 

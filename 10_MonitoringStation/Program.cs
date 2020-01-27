@@ -10,7 +10,7 @@
 
             grid.Scan();
 
-            grid.Results(1);
+            grid.Results();
 
         }
     }

@@ -5,47 +5,54 @@ namespace _10_MonitoringStation
 {
     class Direction
     {
-        public int X;
-        public int Y;
+        public int DeltaX;
+        public int DeltaY;
+        public Double Distance;
         public ushort Quadrant;
-        public float LaserOrder;
+        public float Angle;
         public bool Hittable;
 
         public Direction (int x, int y)
         {
-            X = x;
-            Y = y;
             Hittable = true;
 
-            if ( X <= 0 && Y > 0)
+            DeltaX = x;
+            DeltaY = y;
+
+            Distance = Math.Sqrt((x * x) +  (y * y));
+            if ( DeltaX <= 0 && DeltaY > 0)
             {
                 Quadrant = (int)Quad.Q1;
-                LaserOrder = Math.Abs((float)X / (float)Y);
+                Angle = Math.Abs((float)DeltaX / (float)DeltaY);
             }
-            if ( X < 0 && Y <= 0)
+            if ( DeltaX < 0 && DeltaY <= 0)
             {
                 Quadrant = (int)Quad.Q2;
-                LaserOrder = Math.Abs((float)Y / (float)X);
+                Angle = Math.Abs((float)DeltaY / (float)DeltaX);
             }
-            if ( X >= 0 && Y < 0)
+            if ( DeltaX >= 0 && DeltaY < 0)
             {
                 Quadrant = (int)Quad.Q3;
-                LaserOrder = Math.Abs((float)X / (float)Y);
+                Angle = Math.Abs((float)DeltaX / (float)DeltaY);
             }
-            if ( X > 0 && Y >= 0)
+            if ( DeltaX > 0 && DeltaY >= 0)
             {
                 Quadrant = (int)Quad.Q4;
-                LaserOrder = Math.Abs((float)Y / (float)X);
+                Angle = Math.Abs((float)DeltaY / (float)DeltaX);
             }
         }
 
         public bool Equal ( Direction other)
         {
-            return (this.Quadrant == other.Quadrant && this.LaserOrder == other.LaserOrder);
+            return (this.Quadrant == other.Quadrant && this.Angle == other.Angle);
+        }
+        public bool NotEqual(Direction other)
+        {
+            return (this.Quadrant != other.Quadrant || this.Angle != other.Angle);
         }
         public override string ToString()
         {
-            return$"{(Quad)Quadrant} {LaserOrder:0.0000}  ({X} {Y})";
+            return$"{(Quad)Quadrant} {Angle:0.0000}  ({DeltaX} {DeltaY})";
         }
     }
 }

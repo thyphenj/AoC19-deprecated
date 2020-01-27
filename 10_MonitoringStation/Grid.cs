@@ -23,7 +23,7 @@ namespace _10_MonitoringStation
             HitCount = new int[Width, Height];
             ScannerDirections = new List<Direction>[Width, Height];
 
-            Print();
+            PrintMap();
         }
 
         public void Scan()
@@ -34,22 +34,32 @@ namespace _10_MonitoringStation
 
                 for (int x = 0; x < Width; x++)
                 {
-                    bool foundOne = Map[x, y] == '#';
+                    if (Map[x, y] == '#' || Map[x, y] == 'X')
+                    {
+                        ScannerDirections[x, y] = GetScannerDirections(x, y);
 
-                    HitCount[x, y] = foundOne ? CountScannerHits(x, y) : 0;
+                        HitCount[x, y] = CountScannerHits(x, y);
 
-                    display += (foundOne ? $"{HitCount[x, y],1}" : " ");
+                        display += $"{HitCount[x, y],1}";
+                    }
+                    else
+                    {
+                        HitCount[x, y] = 0;
+
+                        display += $".";
+                    }
+
                 }
-                Console.WriteLine(display);
+                //Console.WriteLine(display);
             }
         }
 
-        public void Results(int part)
+        public void Results()
         {
-            if (part == 1)
+            int max = 0;
+            int maxX = 0; int maxY = 0;
+
             {
-                int max = 0;
-                int maxX = 0; int maxY = 0;
                 for (int y = 0; y < Height; y++)
                 {
                     for (int x = 0; x < Width; x++)
@@ -62,22 +72,62 @@ namespace _10_MonitoringStation
                         }
                     }
                 }
-                Console.WriteLine($"\nmax = {max} at ({maxX},{maxY})");
+                Console.WriteLine($"\nPart 1 result : max = {max} at ({maxX},{maxY})\n\n");
             }
 
-            if (part == 2)
             {
+                var laser = ScannerDirections[maxX, maxY];
 
+                int i = 0;
+                int numHits = 0;
+
+                // *** Get first hit
+                laser[i].Hittable = false;
+                numHits++;
+                //Console.WriteLine($"{i,3} ({maxX - laser[i].DeltaX},{maxY - laser[i].DeltaY})");
+
+                while (numHits < 200)
+                {
+                    // *** Increment and skip identical direction
+                    if (++i == laser.Count)
+                    {
+                        i = 0;
+                    }
+                    else
+                    {
+                        while (i > 0 && laser[i].Equal(laser[i - 1]))
+                        {
+                            if (++i == laser.Count)
+                                i = 0;
+                        }
+                    }
+
+                    // *** increment to next hittable
+                    while (!laser[i].Hittable)
+                    {
+                        if (++i == laser.Count)
+                            i = 0;
+                    }
+                    numHits++;
+                    laser[i].Hittable = false;
+                    //Console.WriteLine($"{i,3} ({maxX-laser[i].DeltaX},{maxY-laser[i].DeltaY})");
+                }
+                Console.WriteLine($"\nPart 2 result :  ({maxX-laser[i].DeltaX},{maxY-laser[i].DeltaY})");
             }
         }
 
         // ---------------------------------------------------------------------
         // --- Private functions
-        private int CountScannerHits(int x0, int y0)
+        private int CountScannerHits(int x, int y)
         {
-            ScannerDirections[x0, y0] = GetScannerDirections(x0, y0);
+            int count = 1;
+            for (int i = 1; i < ScannerDirections[x, y].Count; i++)
+            {
+                if (ScannerDirections[x, y][i].NotEqual(ScannerDirections[x, y][i - 1]))
+                    count++;
+            }
 
-            return ScannerDirections[x0,y0].Count;
+            return count;
         }
 
         private List<Direction> GetScannerDirections(int x0, int y0)
@@ -90,22 +140,14 @@ namespace _10_MonitoringStation
                 {
                     int yDelta = y0 - y1;
                     int xDelta = x0 - x1;
-                    if (Map[x1, y1] == '#' && !(xDelta == 0 && yDelta == 0))
+                    if ((Map[x1, y1] == '#' || Map[x1, y1] == 'X') && !(xDelta == 0 && yDelta == 0))
                     {
                         retDirections.Add(new Direction(xDelta, yDelta));
                     }
                 }
             }
 
-            retDirections = retDirections.OrderBy(p => p.LaserOrder).OrderBy(o => o.Quadrant).ToList<Direction>();
-
-            int i = retDirections.Count - 1;
-            while (i > 0)
-            {
-                if (retDirections[i].Equal(retDirections[i - 1]))
-                    retDirections.RemoveAt(i);
-                i--;
-            }
+            retDirections = retDirections.OrderBy(q=>q.Distance).OrderBy(p => p.Angle).OrderBy(o => o.Quadrant).ToList<Direction>();
 
             return retDirections;
         }
@@ -118,7 +160,7 @@ namespace _10_MonitoringStation
             if (x == 0) { return (0, Math.Sign(y)); }
             if (y == 0) { return (Math.Sign(x), 0); }
 
-            foreach (int n in new int[] { 2, 3, 5, 7, 11, 13, 17, 19, 21, 23, 29, 31 })
+            foreach (int n in new int[] { 2, 3, 5, 7, 11 })
             {
                 if (Math.Abs(x) >= n && Math.Abs(y) >= n)
                     while (x % n == 0 && y % n == 0)
@@ -130,9 +172,11 @@ namespace _10_MonitoringStation
             return (x, y);
         }
 
-        private void Print()
+        private void PrintMap()
         {
             // Print out the map
+            Console.WriteLine($"Original Map\n");
+
             for (int y = 0; y < Height; y++)
             {
                 string str = "";
@@ -142,6 +186,7 @@ namespace _10_MonitoringStation
                 }
                 Console.WriteLine(str);
             }
+            Console.WriteLine($"\n");
         }
     }
 }
