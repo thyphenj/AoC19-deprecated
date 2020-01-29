@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "10_MonitoringStation", "10_
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "00_IntCodeComputer", "00_IntCodeComputer\00_IntCodeComputer.csproj", "{C6F20B86-614A-4488-9DD0-9EC75D9D71BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "10_SpacePolice", "10_SpacePolice\10_SpacePolice.csproj", "{A2C43C76-677D-408C-957D-124BD0CD91A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "11_SpacePolice", "10_SpacePolice\11_SpacePolice.csproj", "{A2C43C76-677D-408C-957D-124BD0CD91A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
