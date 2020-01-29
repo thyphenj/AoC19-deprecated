@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "10_MonitoringStation", "10_
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "00_IntCodeComputer", "00_IntCodeComputer\00_IntCodeComputer.csproj", "{C6F20B86-614A-4488-9DD0-9EC75D9D71BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "11_SpacePolice", "11_SpacePolice\11_SpacePolice.csproj", "{29272A8A-DB78-4158-A47F-07A1BE91637E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{C6F20B86-614A-4488-9DD0-9EC75D9D71BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6F20B86-614A-4488-9DD0-9EC75D9D71BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6F20B86-614A-4488-9DD0-9EC75D9D71BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29272A8A-DB78-4158-A47F-07A1BE91637E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29272A8A-DB78-4158-A47F-07A1BE91637E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29272A8A-DB78-4158-A47F-07A1BE91637E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29272A8A-DB78-4158-A47F-07A1BE91637E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
