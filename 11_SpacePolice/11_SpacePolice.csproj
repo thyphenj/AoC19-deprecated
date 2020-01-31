@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\00_IntCodeComputer\00_IntCodeComputer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Text\intCode.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

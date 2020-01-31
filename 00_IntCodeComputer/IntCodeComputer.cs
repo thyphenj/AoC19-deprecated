@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using _00_Interfaces;
 
 namespace _00_IntCodeComputer
 {
@@ -22,7 +23,7 @@ namespace _00_IntCodeComputer
             Code = tokens.ToArray();
         }
 
-        public void Run(DataSpace theData)
+        public void Run(IDataSpace theData)
         {
             int opCount;
             int oper1, oper2, oper3;

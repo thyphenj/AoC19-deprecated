@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Drawing;
 using System.Collections.Generic;
-using System.Text;
 
-namespace _11_SpacePolice
+namespace _11_SpacePolice 
 {
-    class DataSpace
+    class DataSpace 
     {
-        public Dictionary<Point, (long colour, int visits)> queue = new Dictionary<Point, (long, int)>();
+        public Dictionary<Point, (long colour, int visits)> theData = new Dictionary<Point, (long, int)>();
 
         public int X;
         public int Y;
@@ -17,27 +16,26 @@ namespace _11_SpacePolice
 
         private long? Paint = null;
 
-        public DataSpace(int initColour)
+        public DataSpace(int initColour = 0)
         {
             X = 0;
             Y = 0;
             Colour = initColour;
             Direction = 0;
 
-            queue.Add(new Point(X, Y), (Colour, 0));
+            theData.Add(new Point(X, Y), (Colour, 0));
         }
 
         public long Read()
         {
-            (long colour, int visits) val;
 
-            if (queue.TryGetValue(new Point(X, Y), out val))
+            if (theData.TryGetValue(new Point(X, Y), out (long colour, int visits) values))
             {
-                return val.colour;
+                return values.colour;
             }
             else
             {
-                queue.Add(new Point(X, Y), (0, 0));
+                theData.Add(new Point(X, Y), (0, 0));
                 return 0;
             }
         }
@@ -49,11 +47,11 @@ namespace _11_SpacePolice
                 Paint = val;
             else
             {
-                var zz = queue[new Point(X, Y)];
+                var zz = theData[new Point(X, Y)];
                 zz.visits++;
                 zz.colour = Paint.Value;
                 Paint = null;
-                queue[new Point(X, Y)] = zz;
+                theData[new Point(X, Y)] = zz;
 
                 Direction = (Direction + (val == 0 ? 3 : 1)) % 4;
 
@@ -79,7 +77,7 @@ namespace _11_SpacePolice
 
         public void Part1()
         {
-            Console.WriteLine($"There are {queue.Count} cells used!\n\n");
+            Console.WriteLine($"There are {theData.Count} cells used!\n\n");
             Console.WriteLine($"--------------------------\n\n");
         }
 
@@ -90,7 +88,7 @@ namespace _11_SpacePolice
             int minY = 0;
             int maxY = 0;
 
-            foreach (var xx in queue)
+            foreach (var xx in theData)
             {
                 if (xx.Key.X < minX) minX = xx.Key.X;
                 if (xx.Key.X > maxX) maxX = xx.Key.X;
@@ -100,7 +98,7 @@ namespace _11_SpacePolice
 
             long[,] result = new long[1+maxX - minX, 1+maxY - minY];
 
-            foreach (var xx in queue)
+            foreach (var xx in theData)
             {
                 result[xx.Key.X - minX, xx.Key.Y - minY] = xx.Value.colour % 2;
             }
