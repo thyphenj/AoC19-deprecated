@@ -4,15 +4,12 @@ using System.Text;
 
 namespace _11_SpacePolice
 {
-    class Queue
+    class DataSpace
     {
         public List<long> queue = new List<long>();
 
-        public Queue(int seed)
-        {
-            queue.Add(seed);
-        }
-        public Queue()
+ 
+        public DataSpace()
         {
 
         }
@@ -32,6 +29,10 @@ namespace _11_SpacePolice
         public void Write(long val)
         {
             queue.Add(val);
+        }
+        public long Result()
+        {
+            return queue[0];
         }
     }
 }

@@ -4,19 +4,15 @@ using System.Text;
 
 namespace _11_SpacePolice
 {
-    class IntCode
+    class IntCodeComputer
     {
-        private readonly bool UsePhase = false;
-
-        private int? Phase = null;
-
         private int sp = 0;
         private int bp = 0;
         private int op = 0;
 
         public long[] Code;
 
-        public IntCode(string codeString, bool usePhase = false)
+        public IntCodeComputer(string codeString)
         {
             List<long> CodeList = new List<long>();
 
@@ -24,13 +20,9 @@ namespace _11_SpacePolice
                 CodeList.Add(long.Parse(n));
 
             Code = CodeList.ToArray();
-
-            UsePhase = usePhase;
-            if (!UsePhase)
-                Phase = 0;
         }
 
-        public bool Run(int pha, Queue queue)
+        public bool Run(DataSpace queue)
         {
             int opCount;
 
@@ -72,23 +64,10 @@ namespace _11_SpacePolice
                         opCount = 1;
                         (oper1, _, _) = GetOperands(sp, opCount);
 
-                        {
-                            long val;
+                        Code[oper1] = queue.Read();
 
-                            if (Phase.HasValue)
-                            {
-                                val = queue.Read();
-                            }
-                            else
-                            {
-                                Phase = pha;
-                                val = pha;
-                            }
+                        sp += IncSP(opCount);
 
-                            Code[oper1] = val;
-
-                            sp += IncSP(opCount);
-                        }
                         break;
 
                     case 4:     // wri x
