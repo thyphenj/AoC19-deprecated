@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace _11_SpacePolice
+namespace _00_IntCodeComputer
 {
     class IntCodeComputer
     {

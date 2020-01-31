@@ -7,24 +7,42 @@ namespace _11_SpacePolice
     {
         static void Main()
         {
-            string programText;
-             
-            programText = File.ReadAllText(@"Text\intCode.txt");
+            Part1();
 
-            Console.WriteLine(Part1(programText));
-            
+            Part2();
         }
+
         //-------------------------------------------------------------------------------------------------------
 
-        static string Part1(string programText)
+        static void Part1()
         {
+            string programText;
+
+            programText = File.ReadAllText(@"Text\intCode.txt");
+
             IntCodeComputer computer = new IntCodeComputer(programText);
 
-            var dataSpace = new DataSpace();
+            var dataSpace = new DataSpace(0);
 
             computer.Run(dataSpace);
 
-            return dataSpace.Result();
+            dataSpace.Part1();
+        }
+        //-------------------------------------------------------------------------------------------------------
+
+        static void Part2()
+        {
+            string programText;
+
+            programText = File.ReadAllText(@"Text\intCode.txt");
+
+            IntCodeComputer computer = new IntCodeComputer(programText);
+
+            var dataSpace = new DataSpace(1);
+
+            computer.Run(dataSpace);
+
+            dataSpace.Part2();
         }
     }
 }

@@ -17,11 +17,11 @@ namespace _11_SpacePolice
 
         private long? Paint = null;
 
-        public DataSpace()
+        public DataSpace(int initColour)
         {
             X = 0;
             Y = 0;
-            Colour = 1;
+            Colour = initColour;
             Direction = 0;
 
             queue.Add(new Point(X, Y), (Colour, 0));
@@ -77,7 +77,13 @@ namespace _11_SpacePolice
             }
         }
 
-        public string Result()
+        public void Part1()
+        {
+            Console.WriteLine($"There are {queue.Count} cells used!\n\n");
+            Console.WriteLine($"--------------------------\n\n");
+        }
+
+        public void Part2()
         {
             int minX = 0;
             int maxX = 0;
@@ -106,7 +112,6 @@ namespace _11_SpacePolice
                 Console.WriteLine();
             }
 
-            return $"{minX}, {minY} ==>> {maxX}, {maxY}";
         }
     }
 }
