@@ -16,7 +16,7 @@ namespace _11_SpacePolice
         }
         //-------------------------------------------------------------------------------------------------------
 
-        static long Part1(string programText)
+        static string Part1(string programText)
         {
             IntCodeComputer computer = new IntCodeComputer(programText);
 
