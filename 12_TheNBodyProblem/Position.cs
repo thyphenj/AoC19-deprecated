@@ -17,9 +17,14 @@ namespace _12_TheNBodyProblem
             Z = z;
         }
 
+        public bool Equal ( Position other)
+        {
+            return other.X == this.X && other.Y == this.Y && other.Z == this.Z;
+        }
+
         public override string ToString()
         {
-            return $"({X,3},{Y,3},{Z,3})";
+            return $"{X},{Y},{Z}";
         }
     }
 }

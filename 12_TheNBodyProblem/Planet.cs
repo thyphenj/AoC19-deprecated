@@ -8,40 +8,59 @@ namespace _12_TheNBodyProblem
     {
         public Position Pos;
         public Velocity Vel;
+
         public Planet(int x, int y, int z)
         {
             Pos = new Position(x, y, z);
             Vel = new Velocity();
         }
-        public Planet(string str)
-        {
-            int[] arr = new int[3];
-            int i = 0;
-            foreach (var a in str.Split(','))
-                arr[i++] = Convert.ToInt32(a);
-
-            Pos = new Position(arr[0], arr[1], arr[2]);
-            Vel = new Velocity();
-        }
 
         public override string ToString()
         {
-            return $"{Pos.ToString()} : {Vel.ToString()}";
+            string xx = $"{Pos.ToString()},{Vel.ToString()}";
+
+            int i = 0;
+            int next = 0;
+            string theStr = "";
+
+            while (i < xx.Length)
+            {
+                char ch = xx[i];
+                int a;
+                if (ch >= '0' && ch <= '9')
+                    a = int.Parse(ch.ToString());
+                else if (ch == '-')
+                    a = 10;
+                else if (ch == ',')
+                    a = 11;
+                else
+                    a = 12;
+
+                next = next * 16 + a;
+                i++;
+                if ( i % 4 == 0)
+                {
+                    theStr += (char)next;
+
+                    next = 0;
+                }
+            }
+            return theStr;
         }
 
-        public int Pot ()
+        public int Pot()
         {
             return Math.Abs(Pos.X) + Math.Abs(Pos.Y) + Math.Abs(Pos.Z);
         }
 
-        public int Ken ()
+        public int Kin()
         {
             return Math.Abs(Vel.X) + Math.Abs(Vel.Y) + Math.Abs(Vel.Z);
         }
 
-        public int Energy ()
+        public int Energy()
         {
-            return this.Pot() * this.Ken();
+            return this.Pot() * this.Kin();
         }
     }
 }
