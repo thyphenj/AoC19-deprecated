@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace _12_TheNBodyProblem
 {
@@ -18,35 +16,50 @@ namespace _12_TheNBodyProblem
         public override string ToString()
         {
             string xx = $"{Pos.ToString()},{Vel.ToString()}";
-
-            int i = 0;
-            int next = 0;
-            string theStr = "";
-
-            while (i < xx.Length)
-            {
-                char ch = xx[i];
-                int a;
-                if (ch >= '0' && ch <= '9')
-                    a = int.Parse(ch.ToString());
-                else if (ch == '-')
-                    a = 10;
-                else if (ch == ',')
-                    a = 11;
-                else
-                    a = 12;
-
-                next = next * 16 + a;
-                i++;
-                if ( i % 4 == 0)
-                {
-                    theStr += (char)next;
-
-                    next = 0;
-                }
-            }
-            return theStr;
+            return xx;
         }
+
+        public void Gravity(Planet that)
+        {
+            if (this.Pos.X < that.Pos.X)
+            {
+                this.Vel.X++;
+                that.Vel.X--;
+            }
+            if (this.Pos.X > that.Pos.X)
+            {
+                this.Vel.X--;
+                that.Vel.X++;
+            }
+            if (this.Pos.Y < that.Pos.Y)
+            {
+                this.Vel.Y++;
+                that.Vel.Y--;
+            }
+            if (this.Pos.Y > that.Pos.Y)
+            {
+                this.Vel.Y--;
+                that.Vel.Y++;
+            }
+            if (this.Pos.Z < that.Pos.Z)
+            {
+                this.Vel.Z++;
+                that.Vel.Z--;
+            }
+            if (this.Pos.Z > that.Pos.Z)
+            {
+                this.Vel.Z--;
+                that.Vel.Z++;
+            }
+        }
+
+        public void Velocity()
+        {
+            this.Pos.X += this.Vel.X;
+            this.Pos.Y += this.Vel.Y;
+            this.Pos.Z += this.Vel.Z;
+        }
+
 
         public int Pot()
         {

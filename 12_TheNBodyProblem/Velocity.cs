@@ -25,7 +25,7 @@ namespace _12_TheNBodyProblem
 
         public override string ToString()
         {
-            return $"{X},{Y},{Z}";
+            return $"{X,4},{Y,4},{Z,4}";
         }
 
     }
