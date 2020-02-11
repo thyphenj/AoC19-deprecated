@@ -27,7 +27,15 @@ namespace _13_CarePackage
 
         public long Read()
         {
-            return 0;
+            int theBall = theData.Where(x => x.Value == 4).FirstOrDefault().Key.X;
+            int theBat = theData.Where(x => x.Value == 3).FirstOrDefault().Key.X;
+            if (theBat < theBall)
+                return 1;
+            else if (theBat > theBall)
+                return -1;
+            else 
+                return 0;
+
         }
 
         // *** We need to BUILD this from separate writes
@@ -46,9 +54,16 @@ namespace _13_CarePackage
                     if (X.Value > maxX) maxX = X.Value;
                     if (Y.Value > maxY) maxY = Y.Value;
 
-                    theData.Add(new Point(X.Value, Y.Value), i);
+                    Point pt = new Point(X.Value, Y.Value);
+                    if (theData.ContainsKey(pt))
+                    {
+                        theData[pt] = i;
+                        if (i != 0) Console.WriteLine(GetString());
+                    }
+                    else
+                        theData.Add(pt, i);
                 }
-                else 
+                else
                 {
                     Screen = i;
                 }
@@ -59,7 +74,7 @@ namespace _13_CarePackage
 
         public int GetCount()
         {
-            int retval = theData.Where( x => x.Value == 2).Count();
+            int retval = theData.Where(x => x.Value == 2).Count();
 
             return retval;
         }
@@ -98,7 +113,7 @@ namespace _13_CarePackage
                 retval += $"\n";
             }
 
-            return retval;
+            return retval ;
         }
     }
 }

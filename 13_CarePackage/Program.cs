@@ -7,7 +7,7 @@ namespace _13_CarePackage
     {
         static void Main(string[] args)
         {
-            Part1();
+            //Part1();
             Part2();
         }
         static void Part1()
@@ -39,9 +39,7 @@ namespace _13_CarePackage
 
             computer.Run(dataSpace);
 
-            Console.WriteLine($"Count = {dataSpace.GetCount()}");
-
-            Console.WriteLine(dataSpace.GetString());
+            Console.WriteLine(dataSpace.Screen);
         }
     }
 }

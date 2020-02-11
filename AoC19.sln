@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "11_SpacePolice", "11_SpaceP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "12_TheNBodyProblem", "12_TheNBodyProblem\12_TheNBodyProblem.csproj", "{5A2F81DD-EEE8-4E46-A2E9-A9EE566603D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "13_CarePackage", "13_CarePackage\13_CarePackage.csproj", "{D2175852-DC8F-4B18-87AD-E62EEF18A79F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "13_CarePackage", "13_CarePackage\13_CarePackage.csproj", "{D2175852-DC8F-4B18-87AD-E62EEF18A79F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "14_SpaceStoichiometr", "14_SpaceStoichiometr\14_SpaceStoichiometr.csproj", "{C65C754F-207F-49BD-B37E-6570273AD777}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +95,10 @@ Global
 		{D2175852-DC8F-4B18-87AD-E62EEF18A79F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2175852-DC8F-4B18-87AD-E62EEF18A79F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2175852-DC8F-4B18-87AD-E62EEF18A79F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C65C754F-207F-49BD-B37E-6570273AD777}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C65C754F-207F-49BD-B37E-6570273AD777}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C65C754F-207F-49BD-B37E-6570273AD777}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C65C754F-207F-49BD-B37E-6570273AD777}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
