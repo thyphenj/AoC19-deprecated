@@ -7,6 +7,11 @@ namespace _13_CarePackage
     {
         static void Main(string[] args)
         {
+            Part1();
+            Part2();
+        }
+        static void Part1()
+        {
             string programText;
 
             programText = File.ReadAllText(@"Text\intCode.txt");
@@ -17,7 +22,24 @@ namespace _13_CarePackage
 
             computer.Run(dataSpace);
 
-            Console.WriteLine( $"Count = {dataSpace.GetCount()}");
+            Console.WriteLine($"Count = {dataSpace.GetCount()}");
+
+            Console.WriteLine(dataSpace.GetString());
+        }
+        static void Part2()
+        {
+            string programText;
+
+            programText = File.ReadAllText(@"Text\intCode.txt");
+            programText = "2" + programText.Substring(1);
+
+            IntCodeComputer computer = new IntCodeComputer(programText);
+
+            var dataSpace = new DataSpace();
+
+            computer.Run(dataSpace);
+
+            Console.WriteLine($"Count = {dataSpace.GetCount()}");
 
             Console.WriteLine(dataSpace.GetString());
         }
