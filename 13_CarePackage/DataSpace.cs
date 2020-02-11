@@ -12,9 +12,12 @@ namespace _13_CarePackage
 
         public int? X;
         public int? Y;
+        public int Screen;
 
         private int maxX = 0;
         private int maxY = 0;
+
+
 
         public DataSpace()
         {
@@ -38,11 +41,17 @@ namespace _13_CarePackage
                 Y = i;
             else
             {
-                if (X.Value > maxX) maxX = X.Value;
-                if (Y.Value > maxY) maxY = Y.Value;
+                if (X >= 0)
+                {
+                    if (X.Value > maxX) maxX = X.Value;
+                    if (Y.Value > maxY) maxY = Y.Value;
 
-                theData.Add(new Point(X.Value, Y.Value), i);
-
+                    theData.Add(new Point(X.Value, Y.Value), i);
+                }
+                else 
+                {
+                    Screen = i;
+                }
                 X = null;
                 Y = null;
             }
