@@ -8,16 +8,12 @@ namespace _12_TheNBodyProblem
         public Velocity Vel;
         private Position Start;
 
-        public bool AtStart;
-
         public Planet(int x, int y, int z)
         {
             Start = new Position(x, y, z);
 
             Pos = new Position(x, y, z);
             Vel = new Velocity();
-
-            AtStart = true;
         }
         
         public override string ToString()
@@ -65,8 +61,6 @@ namespace _12_TheNBodyProblem
             this.Pos.X += this.Vel.X;
             this.Pos.Y += this.Vel.Y;
             this.Pos.Z += this.Vel.Z;
-
-            AtStart = Vel.Zero() && Pos.Zero();
         }
 
         public int Pot()
