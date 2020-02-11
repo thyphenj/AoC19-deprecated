@@ -16,7 +16,10 @@ namespace _12_TheNBodyProblem
             Y = y;
             Z = z;
         }
-
+        public bool Zero ( )
+        {
+            return this.X == 0 && this.Y == 0 && this.Z == 0;
+        }
         public bool Equal ( Position other)
         {
             return other.X == this.X && other.Y == this.Y && other.Z == this.Z;

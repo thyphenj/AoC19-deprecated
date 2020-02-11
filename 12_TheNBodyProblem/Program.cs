@@ -5,23 +5,21 @@ namespace _12_TheNBodyProblem
 {
     class Program
     {
-        public static Planet[] planets;
-
         static void Main()
         {
-            Part1(0);
-            Part2(0);
+            Part1(1);
+            Part2(1);
         }
 
         static void Part1(int dataSet)
         {
             var data = new Data(dataSet);
-            planets = data.Planets;
+            Planet[] planets = data.Planets;
 
             for (int i = 0; i < 1000; i++)
             {
-                Step();
-                if (planets[0].Pos.X == 119) Console.WriteLine($"{i,4} ==> {CurrentState()}");
+                Step(planets);
+                if (planets[0].Pos.X == 119) Console.WriteLine($"{i,4} ==> {CurrentState(planets)}");
             }
 
 
@@ -39,31 +37,34 @@ namespace _12_TheNBodyProblem
         static void Part2(int dataSet)
         {
             var data = new Data(dataSet);
-            planets = data.Planets;
-            int prev = 0;
-            for (int i = 0; i < 1000000000; i++)
+            Planet[] planets = data.Planets;
+
+            for (long iStep = 1; iStep <= 100000000000; iStep++)
             {
-                Step();
-                if ( i % 100000 == 0 ) Console.Write($"{i}\r");
-                if (planets[0].Pos.Equal(new Position(119,0,27) ))
+                if (iStep % 100000 == 0) Console.Write($"{iStep,10}\r");
+                Step(planets);
+                for(int i = 0; i < 4; i++)
                 {
-                    Console.WriteLine($"{i,4} ==> {i-prev}");
-                    prev = i;
+                    if (planets[i].AtStart)
+                        Console.WriteLine($"{iStep,10} - {i} - {planets[i]}");
                 }
             }
         }
 
-        static void Step()
+        static void Step(Planet[] planets)
         {
-            for (int i = 0; i < 3; i++)
-                for (int j = i + 1; j < 4; j++)
-                    planets[i].Gravity(planets[j]);
+            for (int A = 0; A < 3; A++)
+                for (int B = A + 1; B < 4; B++)
+                    planets[A].Gravity(planets[B]);
 
-            for (int i = 0; i < 4; i++)
-                planets[i].Velocity();
+            for (int A = 0; A < 4; A++)
+            {
+                planets[A].Velocity();
+            }
         }
 
-        static string CurrentState()
+
+        static string CurrentState(Planet[] planets)
         {
             string retval = "";
 
