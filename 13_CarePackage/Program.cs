@@ -39,7 +39,8 @@ namespace _13_CarePackage
 
             computer.Run(dataSpace);
 
-            Console.WriteLine(dataSpace.Screen);
+            Console.Clear();
+            Console.WriteLine($"{dataSpace.Screen,10}\n{dataSpace.GetString()}");
         }
     }
 }

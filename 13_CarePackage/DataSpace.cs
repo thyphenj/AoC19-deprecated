@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 
 
 namespace _13_CarePackage
@@ -58,7 +59,10 @@ namespace _13_CarePackage
                     if (theData.ContainsKey(pt))
                     {
                         theData[pt] = i;
-                        if (i != 0) Console.WriteLine(GetString());
+                        //Console.Clear();
+                        //Console.WriteLine($"{Screen,10}");
+                        //Console.WriteLine(GetString());
+                        //Thread.Sleep(6);
                     }
                     else
                         theData.Add(pt, i);
