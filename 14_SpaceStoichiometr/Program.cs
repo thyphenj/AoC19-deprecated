@@ -9,7 +9,7 @@ namespace _14_SpaceStoichiometr
     {
         static void Main(string[] args)
         {
-            int which = 1;
+            int which = 3;
             Part1(which);
         }
 

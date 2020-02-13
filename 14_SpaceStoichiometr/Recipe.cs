@@ -70,12 +70,16 @@ namespace _14_SpaceStoichiometr
             int oreSum = 0;
             foreach (var i in Totals)
             {
-                int count = OREs.Where(x => x.Target.Name == i.Key).FirstOrDefault().Target.Qty;
-                count = ((i.Value + count - 1) / count)*count;
-                //* OREs.Where(x => x.Target.Name == i.Key).FirstOrDefault().Target.Qty;
-                oreSum += count;
+                var theORE = OREs.Where(x => x.Target.Name == i.Key).FirstOrDefault();
 
-                Console.WriteLine($"{i.Key,5} {i.Value}  {count}");
+                int needToProduce = theORE.Target.Qty;
+                needToProduce = ((i.Value + needToProduce - 1) / needToProduce)*needToProduce;
+
+                int oresRequired = theORE.Ingredients[0].Qty * needToProduce / theORE.Target.Qty;
+
+                Console.WriteLine($"{i.Key,5} {i.Value}  {needToProduce} {oresRequired}");
+
+                oreSum += oresRequired;
             }
             Console.WriteLine($"COUNT == {oreSum}");
         }
