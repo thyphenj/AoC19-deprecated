@@ -7,9 +7,9 @@ namespace _14_SpaceStoichiometr
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            int which = 3;
+            int which = 4;
             Part1(which);
         }
 

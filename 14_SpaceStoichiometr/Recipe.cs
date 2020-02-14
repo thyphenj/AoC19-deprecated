@@ -29,7 +29,7 @@ namespace _14_SpaceStoichiometr
             }
         }
 
-        public void ReplaceFuel()
+        public Recipe ReplaceFuel()
         {
             List<int> removeList = new List<int>();
 
@@ -44,15 +44,21 @@ namespace _14_SpaceStoichiometr
                     removeList.Add(i);
                     foreach (var w in r.Ingredients)
                     {
-                        w.Qty *= item.Qty;
-                        FUEL.Add(w);
+                        Item a = new Item(w.Name, w.Qty)
+                        {
+                            Qty = w.Qty * ((item.Qty + r.Target.Qty - 1) / r.Target.Qty)
+                        };
+                        FUEL.Add(a);
                     }
                 }
                 i++;
+                Display();
             }
 
             foreach (int j in removeList.OrderByDescending(x => x))
                 FUEL.Ingredients.RemoveAt(j);
+
+            return this;
         }
 
         public void Accumulate()
