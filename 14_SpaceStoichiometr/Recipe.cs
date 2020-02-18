@@ -27,11 +27,26 @@ namespace _14_SpaceStoichiometr
                 else
                     Combinations.Add(recipe);
             }
+            FUEL.Ingredients = FUEL.Ingredients.OrderBy(x => x.Name).ToList();
+        }
+
+        public Tree CreateTree()
+        {
+            Tree xx = new Tree();
+            xx.Root = new Node(FUEL.Target.Name);
+            foreach (var x in FUEL.Ingredients)
+            {
+                var y = new Node(x.Name);
+
+                xx.Root.Kids.Add(y);
+            }
+            return xx;
         }
 
         public Recipe ReplaceFuel()
         {
             List<int> removeList = new List<int>();
+            List<Item> Spare = new List<Item>();
 
             int i = 0;
             while (i < FUEL.Ingredients.Count)
@@ -49,6 +64,7 @@ namespace _14_SpaceStoichiometr
                             Qty = w.Qty * ((item.Qty + r.Target.Qty - 1) / r.Target.Qty)
                         };
                         FUEL.Add(a);
+
                     }
                 }
                 i++;
@@ -79,7 +95,7 @@ namespace _14_SpaceStoichiometr
                 var theORE = OREs.Where(x => x.Target.Name == i.Key).FirstOrDefault();
 
                 int needToProduce = theORE.Target.Qty;
-                needToProduce = ((i.Value + needToProduce - 1) / needToProduce)*needToProduce;
+                needToProduce = ((i.Value + needToProduce - 1) / needToProduce) * needToProduce;
 
                 int oresRequired = theORE.Ingredients[0].Qty * needToProduce / theORE.Target.Qty;
 

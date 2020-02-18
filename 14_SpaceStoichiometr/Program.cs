@@ -20,6 +20,8 @@ namespace _14_SpaceStoichiometr
 
             recipe.Display();
 
+            var xx = recipe.CreateTree();
+
             recipe.ReplaceFuel();
 
             recipe.Display();
