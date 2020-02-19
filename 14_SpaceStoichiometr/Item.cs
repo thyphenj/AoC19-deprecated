@@ -21,7 +21,7 @@ namespace _14_SpaceStoichiometr
         }
         public override string ToString()
         {
-            return $"{Name,5}:{Qty,3}";
+            return $"{Name.PadRight(5)}:{Qty,3}";
         }
     }
 }

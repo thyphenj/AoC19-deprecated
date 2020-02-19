@@ -28,15 +28,21 @@ namespace _14_SpaceStoichiometr
                     Combinations.Add(recipe);
             }
             FUEL.Ingredients = FUEL.Ingredients.OrderBy(x => x.Name).ToList();
+            Combinations = Combinations.OrderBy(x => x.Target.Name).ToList();
+            OREs = OREs.OrderBy(x => x.Target.Name).ToList();
         }
 
         public Tree CreateTree()
         {
+            int depth = 0;
+
             Tree xx = new Tree();
-            xx.Root = new Node(FUEL.Target.Name);
+            xx.Root = new Node(FUEL.Target.Name,depth);
+            depth++;
+
             foreach (var x in FUEL.Ingredients)
             {
-                var y = new Node(x.Name);
+                var y = new Node(x.Name, depth); 
 
                 xx.Root.Kids.Add(y);
             }

@@ -16,11 +16,13 @@ namespace _14_SpaceStoichiometr
     class Node
     {
         public string Name;
+        public int Depth;
         public List<Node> Kids;
 
-        public Node ( string name)
+        public Node ( string name, int depth)
         {
             Name = name;
+            Depth = depth;
             Kids = new List<Node>();
         }
     }
