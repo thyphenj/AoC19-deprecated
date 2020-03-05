@@ -25,5 +25,9 @@ namespace _14_SpaceStoichiometr
             Depth = depth;
             Kids = new List<Node>();
         }
+        public override string ToString()
+        {
+            return $"{Name} has {Kids.Count} Kids";
+        }
     }
 }

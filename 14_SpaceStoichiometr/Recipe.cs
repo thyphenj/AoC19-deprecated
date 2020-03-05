@@ -9,6 +9,7 @@ namespace _14_SpaceStoichiometr
         public List<Combination> Combinations = new List<Combination>();
         public List<Combination> OREs = new List<Combination>();
         public Combination FUEL;
+        Tree TheTree = new Tree();
 
         public Recipe(Data data)
         {
@@ -22,31 +23,36 @@ namespace _14_SpaceStoichiometr
                 }
                 if (recipe.Target.Name == "FUEL")
                     FUEL = recipe;
-                else if (recipe.Ingredients.Where(x => x.Name == "ORE").Count() == 1)
-                    OREs.Add(recipe);
                 else
                     Combinations.Add(recipe);
             }
             FUEL.Ingredients = FUEL.Ingredients.OrderBy(x => x.Name).ToList();
             Combinations = Combinations.OrderBy(x => x.Target.Name).ToList();
-            OREs = OREs.OrderBy(x => x.Target.Name).ToList();
         }
 
         public Tree CreateTree()
         {
             int depth = 0;
 
-            Tree xx = new Tree();
-            xx.Root = new Node(FUEL.Target.Name,depth);
-            depth++;
+            TheTree.Root = new Node(FUEL.Target.Name, depth);
 
-            foreach (var x in FUEL.Ingredients)
+            Recurse(TheTree.Root, FUEL.Ingredients, 0);
+
+            return TheTree;
+        }
+
+        private void Recurse(Node root, List<Item> ingredients, int depth)
+        {
+            foreach ( var x in ingredients)
             {
-                var y = new Node(x.Name, depth); 
-
-                xx.Root.Kids.Add(y);
+                var y = new Node(x.Name, depth+1);
+                var z = Combinations.Where(f => f.Target.Name == y.Name).FirstOrDefault();
+                if ( z != null)
+                {
+                    Recurse(y, z.Ingredients, depth+1);
+                }
+                root.Kids.Add(y);
             }
-            return xx;
         }
 
         public Recipe ReplaceFuel()
