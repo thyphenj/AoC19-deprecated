@@ -22,11 +22,11 @@ namespace _14_SpaceStoichiometr
 
             var xx = recipe.CreateTree();
 
-            recipe.ReplaceFuel();
+            //recipe.ReplaceFuel();
 
-            recipe.Display();
+            //recipe.Display();
 
-            recipe.Accumulate();
+            //recipe.Accumulate();
         }
     }
 }

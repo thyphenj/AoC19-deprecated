@@ -31,7 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "12_TheNBodyProblem", "12_Th
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "13_CarePackage", "13_CarePackage\13_CarePackage.csproj", "{D2175852-DC8F-4B18-87AD-E62EEF18A79F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "14_SpaceStoichiometr", "14_SpaceStoichiometr\14_SpaceStoichiometr.csproj", "{C65C754F-207F-49BD-B37E-6570273AD777}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "14_SpaceStoichiometr", "14_SpaceStoichiometr\14_SpaceStoichiometr.csproj", "{C65C754F-207F-49BD-B37E-6570273AD777}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "15_OxygenSystem", "15_OxygenSystem\15_OxygenSystem.csproj", "{D14F490E-6AD7-482E-8973-E58A62CEC9E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,6 +101,10 @@ Global
 		{C65C754F-207F-49BD-B37E-6570273AD777}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C65C754F-207F-49BD-B37E-6570273AD777}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C65C754F-207F-49BD-B37E-6570273AD777}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D14F490E-6AD7-482E-8973-E58A62CEC9E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D14F490E-6AD7-482E-8973-E58A62CEC9E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D14F490E-6AD7-482E-8973-E58A62CEC9E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D14F490E-6AD7-482E-8973-E58A62CEC9E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

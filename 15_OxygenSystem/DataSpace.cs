@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 
 
-namespace _13_CarePackage
+namespace _15_OxygenSystem
 {
     class DataSpace
     {
@@ -59,10 +59,10 @@ namespace _13_CarePackage
                     if (theData.ContainsKey(pt))
                     {
                         theData[pt] = i;
-                        Console.Clear();
-                        Console.WriteLine($"{Screen,10}");
-                        Console.WriteLine(GetString());
-                        Thread.Sleep(20);
+                        //Console.Clear();
+                        //Console.WriteLine($"{Screen,10}");
+                        //Console.WriteLine(GetString());
+                        //Thread.Sleep(6);
                     }
                     else
                         theData.Add(pt, i);
