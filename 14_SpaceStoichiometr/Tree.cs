@@ -12,6 +12,13 @@ namespace _14_SpaceStoichiometr
         {
             Root = null;
         }
+
+        public void PrintTree (Node from)
+        {
+            Console.Write(from.Name);
+            for (int i = 0; i < from.Depth; i++)
+                Console.Write("     ");
+        }
     }
     class Node
     {
