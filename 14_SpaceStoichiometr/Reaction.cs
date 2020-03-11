@@ -6,18 +6,18 @@ namespace _14_SpaceStoichiometr
 {
     class Reaction
     {
-        public Item Product;
-        public List<Item> Reagents;
+        public Chemical Product;
+        public List<Chemical> Reagents;
 
         public Reaction(string[] strs)
         {
-            Product = new Item(strs);
-            Reagents = new List<Item>();
+            Product = new Chemical(strs);
+            Reagents = new List<Chemical>();
         }
 
-        public void Add(Item item)
+        public void Add(Chemical checmical)
         {
-            Reagents.Add(item);
+            Reagents.Add(checmical);
         }
 
         public override string ToString()

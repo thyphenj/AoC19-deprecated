@@ -21,7 +21,7 @@ namespace _14_SpaceStoichiometr
 
                 foreach (string s in xxxx[0].Split(", "))
                 {
-                    reaction.Add(new Item(s.Split(" ")));
+                    reaction.Add(new Chemical(s.Split(" ")));
                 }
                 reaction.Reagents = reaction.Reagents.OrderBy(x => x.Name).ToList();
 
@@ -38,106 +38,27 @@ namespace _14_SpaceStoichiometr
         {
             int depth = 0;
 
-            TheTree.Root = new Node(FUEL.Product.Name, depth);
+            TheTree.Root = new Node(FUEL.Product.Name, depth,FUEL.Product.Qty);
 
-            Recurse(TheTree.Root, FUEL.Reagents, 0);
+            CreateSubTree(TheTree.Root, FUEL.Reagents, 0);
 
             return TheTree;
         }
 
-        private void Recurse(Node root, List<Item> ingredients, int depth)
+        private void CreateSubTree(Node root, List<Chemical> ingredients, int depth)
         {
             foreach ( var x in ingredients)
             {
-                var y = new Node(x.Name, depth+1);
+                var y = new Node(x.Name, depth+1,x.Qty);
                 var z = Reactions.Where(f => f.Product.Name == y.Name).FirstOrDefault();
                 if ( z != null)
                 {
-                    Recurse(y, z.Reagents, depth+1);
+                    CreateSubTree(y, z.Reagents, depth+1);
                 }
                 root.Kids.Add(y);
             }
         }
 
-        public Recipe ReplaceFuel()
-        {
-            List<int> removeList = new List<int>();
-            List<Item> Spare = new List<Item>();
-
-            int i = 0;
-            while (i < FUEL.Reagents.Count)
-            {
-                Item item = FUEL.Reagents[i];
-
-                var r = Reactions.Where(x => x.Product.Name == item.Name).FirstOrDefault();
-                if (r != null)
-                {
-                    removeList.Add(i);
-                    foreach (var w in r.Reagents)
-                    {
-                        Item a = new Item(w.Name, w.Qty)
-                        {
-                            Qty = w.Qty * ((item.Qty + r.Product.Qty - 1) / r.Product.Qty)
-                        };
-                        FUEL.Add(a);
-
-                    }
-                }
-                i++;
-                Display();
-            }
-
-            foreach (int j in removeList.OrderByDescending(x => x))
-                FUEL.Reagents.RemoveAt(j);
-
-            return this;
-        }
-
-        public void Accumulate()
-        {
-            Dictionary<string, int> Totals = new Dictionary<string, int>();
-
-            foreach (var i in FUEL.Reagents)
-            {
-                if (Totals.ContainsKey(i.Name))
-                    Totals[i.Name] += i.Qty;
-                else
-                    Totals.Add(i.Name, i.Qty);
-            }
-
-            int oreSum = 0;
-            foreach (var i in Totals)
-            {
-                //TODO var theORE = OREs.Where(x => x.Target.Name == i.Key).FirstOrDefault();
-
-                //TODO int needToProduce = theORE.Target.Qty;
-                //TODO needToProduce = ((i.Value + needToProduce - 1) / needToProduce) * needToProduce;
-
-                //TODO int oresRequired = theORE.Ingredients[0].Qty * needToProduce / theORE.Target.Qty;
-
-                //TODO Console.WriteLine($"{i.Key,5} {i.Value}  {needToProduce} {oresRequired}");
-
-                //TODO oreSum += oresRequired;
-            }
-            Console.WriteLine($"COUNT == {oreSum}");
-        }
-
-        public IEnumerable<Reaction> GetReaction()
-        {
-            foreach (var r in Reactions)
-                yield return r;
-        }
-
-        //TODO public IEnumerable<Combination> GetORE()
-        //TODO {
-        //TODO foreach (Combination r in OREs)
-        //TODO yield return r;
-        //TODO }
-
-        public Reaction GetFUEL()
-        {
-            return FUEL;
-        }
         public override string ToString()
         {
             string retval = "";

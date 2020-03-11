@@ -9,7 +9,7 @@ namespace _14_SpaceStoichiometr
     {
         static void Main()
         {
-            int which = 4;
+            int which = 1;
             Part1(which);
         }
 
@@ -22,11 +22,7 @@ namespace _14_SpaceStoichiometr
 
             var xx = recipe.CreateTree();
 
-            //recipe.ReplaceFuel();
-
-            //recipe.Display();
-
-            //recipe.Accumulate();
+            Tree.PrintTree(xx.Root);
         }
     }
 }
